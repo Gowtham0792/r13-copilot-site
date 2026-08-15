@@ -88,7 +88,7 @@
       // pin that outlasts its own animation leaves a stretch of "dead"
       // scroll with nothing on screen (the hero already folded away,
       // the next section can't appear yet since the pin hasn't released)
-      end: "+=260",
+      end: "+=160",
       scrub: 0.5,
       pin: true,
     },

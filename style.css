@@ -180,7 +180,11 @@ body {
 
 .hero {
   position: relative;
-  padding: clamp(5rem, 13vw, 9rem) 0 clamp(4rem, 9vw, 6.5rem);
+  /* kept compact on purpose — the hero is pinned while it folds into the
+     header, and a pinned section's own natural height adds directly to
+     how much "nothing is happening" scroll sits between the fold
+     finishing and the next section being able to appear. */
+  padding: clamp(2.75rem, 6vw, 4.5rem) 0 clamp(2.25rem, 4vw, 3rem);
   overflow: hidden;
   text-align: center;
 }
@@ -251,7 +255,7 @@ body {
 
 h1 {
   margin: 0 auto;
-  font-size: clamp(3.4rem, 11vw, 8rem);
+  font-size: clamp(2.75rem, 9vw, 6.25rem);
   font-weight: 800;
   letter-spacing: -0.035em;
   line-height: 1;
