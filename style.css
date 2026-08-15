@@ -1,214 +1,371 @@
-/* R13 Copilot showcase site — single dark theme, no light-mode branch. */
+/* R13 Copilot showcase site — single dark theme.
+   Design system: "engineering spec sheet" — IBM Plex Sans for prose/
+   headlines, IBM Plex Mono for readouts, labels, and section marks. */
+
+@font-face {
+  font-family: "Plex Sans";
+  src: url("vendor/fonts/ibm-plex-sans-variable.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Plex Mono";
+  src: url("vendor/fonts/ibm-plex-mono-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Plex Mono";
+  src: url("vendor/fonts/ibm-plex-mono-500.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Plex Mono";
+  src: url("vendor/fonts/ibm-plex-mono-600.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
-  --bg-0: #07080a;
-  --bg-1: #0d1013;
-  --bg-2: #14181c;
-  --line: #23282e;
-  --text: #eef1f4;
-  --text-muted: #8a929c;
-  --accent: #2f7dff;
-  --accent-soft: rgba(47, 125, 255, 0.18);
-  --brake: #ff3b3b;
-  --brake-soft: rgba(255, 59, 59, 0.55);
-  --road: #101418;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html {
-  background: var(--bg-0);
+  --ink: #0a0c0f;
+  --panel: #101317;
+  --panel-2: #171b20;
+  --hair: #262b31;
+  --hair-soft: #1b1f24;
+  --paper: #eef1f4;
+  --paper-dim: #8a9099;
+  --paper-faint: #565c64;
+  --signal: #4a86ff;
+  --signal-dim: rgba(74, 134, 255, 0.14);
+  --amber: #ffb238;
   color-scheme: dark;
 }
 
+* { box-sizing: border-box; }
+
+html { background: var(--ink); }
+
 body {
   margin: 0;
-  min-height: 100vh;
-  background: var(--bg-0);
-  color: var(--text);
-  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: "Plex Sans", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
 }
 
-/* ---------- top bar ---------- */
+::selection { background: var(--signal-dim); color: var(--paper); }
+
+a { color: inherit; }
+
+.mono {
+  font-family: "Plex Mono", ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.wrap {
+  max-width: 78rem;
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 4vw, 3rem);
+}
+
+/* ---------- topbar ---------- */
 
 .topbar {
-  position: fixed;
+  position: sticky;
   top: 0;
-  left: 0;
-  right: 0;
-  z-index: 20;
+  z-index: 30;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.25rem 2rem;
-  pointer-events: none;
+  padding: 1.1rem clamp(1.25rem, 4vw, 3rem);
+  background: rgba(10, 12, 15, 0.72);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--hair-soft);
 }
 
 .wordmark {
-  font-size: 0.95rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-family: "Plex Mono", monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.wordmark .dim { color: var(--paper-dim); }
+.wordmark .signal { color: var(--signal); }
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: "Plex Mono", monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--text);
+  color: var(--paper-dim);
+  border: 1px solid var(--hair);
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem 0.35rem 0.6rem;
 }
 
-.wordmark span {
-  color: var(--accent);
+.status-pill .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 0 3px var(--signal-dim);
+  animation: dot-pulse 2.4s ease-in-out infinite;
 }
 
-/* ---------- hero / pinned scroll scene ---------- */
+@keyframes dot-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+/* ---------- hero ---------- */
 
 .hero {
   position: relative;
-  height: 340vh;
-}
-
-.hero-stage {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  width: 100%;
+  padding: clamp(4.5rem, 12vw, 8rem) 0 clamp(3rem, 8vw, 5rem);
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background:
-    radial-gradient(60% 45% at 50% 32%, rgba(47, 125, 255, 0.14), transparent 70%),
-    linear-gradient(180deg, var(--bg-0) 0%, var(--bg-1) 55%, var(--bg-2) 100%);
+  border-bottom: 1px solid var(--hair-soft);
 }
 
-.hero-copy {
-  position: absolute;
-  top: 16%;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  z-index: 5;
-  width: 100%;
-  padding: 0 1.5rem;
-}
-
-.hero-copy h1 {
-  margin: 0;
-  font-size: clamp(2rem, 6vw, 4rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.05;
-}
-
-.hero-copy h1 .accent {
-  color: var(--accent);
-}
-
-.hero-copy p {
-  margin: 0.9rem auto 0;
-  max-width: 34rem;
-  color: var(--text-muted);
-  font-size: clamp(0.95rem, 1.4vw, 1.1rem);
-}
-
-.scroll-cue {
-  position: absolute;
-  bottom: 2.75rem;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 5;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--text-muted);
-  font-size: 0.7rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-
-.scroll-cue .stroke {
-  width: 1px;
-  height: 34px;
-  background: linear-gradient(180deg, var(--text-muted), transparent);
-  animation: cue-pulse 1.8s ease-in-out infinite;
-}
-
-@keyframes cue-pulse {
-  0%, 100% { opacity: 0.25; transform: scaleY(0.7); }
-  50% { opacity: 1; transform: scaleY(1); }
-}
-
-/* ---------- road backdrop ---------- */
-
-.road {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 34%;
-  background: linear-gradient(180deg, transparent, var(--road) 40%);
-  z-index: 1;
-}
-
-.road::before {
+.hero::before {
+  /* faint drafting-table grid */
   content: "";
   position: absolute;
   inset: 0;
-  background-image: repeating-linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.14) 0,
-    rgba(255, 255, 255, 0.14) 46px,
-    transparent 46px,
-    transparent 116px
-  );
-  background-position: 0 62%;
-  height: 2px;
-  top: 58%;
-  opacity: 0.6;
+  background-image:
+    linear-gradient(var(--hair-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--hair-soft) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 75%);
+  opacity: 0.55;
 }
 
-/* ---------- the animated scene svg ---------- */
-
-.scene {
+.hero-inner {
   position: relative;
   z-index: 2;
-  width: 100%;
-  max-width: 1600px;
-  height: 62vh;
-  min-height: 380px;
 }
 
-.scene svg {
-  width: 100%;
-  height: 100%;
+.eyebrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.9rem;
+  font-family: "Plex Mono", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+  margin-bottom: 1.6rem;
+}
+
+.eyebrow span:not(:last-child)::after {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  margin-left: 0.9rem;
+  background: var(--paper-faint);
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+h1 {
+  margin: 0;
+  max-width: 20ch;
+  font-size: clamp(2.35rem, 5.4vw, 4.1rem);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+
+h1 .signal { color: var(--signal); }
+
+.hero-sub {
+  margin: 1.5rem 0 0;
+  max-width: 42rem;
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  color: var(--paper-dim);
+}
+
+/* live waveform readout */
+
+.readout {
+  position: relative;
+  margin-top: clamp(3rem, 7vw, 4.5rem);
+  border: 1px solid var(--hair);
+  border-radius: 4px;
+  background: linear-gradient(180deg, var(--panel), var(--ink));
+  overflow: hidden;
+}
+
+.readout-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--hair-soft);
+  font-family: "Plex Mono", monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--paper-faint);
+}
+
+.readout-head .live {
+  color: var(--amber);
+}
+
+.readout canvas {
   display: block;
-  overflow: visible;
+  width: 100%;
+  height: 168px;
 }
 
-.chassis .body-panel { fill: url(#bodyGrad); }
-.chassis .body-stripe { fill: var(--accent); opacity: 0.9; }
-.chassis .body-shade { fill: #000; opacity: 0.14; }
-.chassis .decal { fill: rgba(255,255,255,0.86); font-family: inherit; font-weight: 700; letter-spacing: 0.16em; }
-.chassis .kingpin { fill: #1c1f24; }
-.chassis .landing-gear { stroke: #2a2e34; stroke-width: 5; stroke-linecap: round; }
-.chassis .underride { fill: #14171b; }
-.chassis .mudflap { fill: #0d0f12; }
+/* ---------- sections ---------- */
 
-.taillight { fill: var(--brake); opacity: 0.28; }
+section.block {
+  padding: clamp(3.5rem, 9vw, 6rem) 0;
+  border-bottom: 1px solid var(--hair-soft);
+}
 
-.wheel .tire { fill: url(#tireGrad); }
-.wheel .rim { fill: url(#rimGrad); }
-.wheel .spokes { stroke: #454b52; }
-.wheel .hub { fill: #d7dade; }
-.wheel .caliper { fill: #17191c; }
-.wheel .spin-blur { fill: url(#blurGrad); opacity: 0; }
-.wheel .caliper-glow { fill: var(--brake); filter: blur(5px); opacity: 0; }
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: clamp(2rem, 5vw, 3rem);
+  flex-wrap: wrap;
+}
 
-.scene-shadow { opacity: 0.6; }
+.section-mark {
+  font-family: "Plex Mono", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--signal);
+}
 
-/* prefers-reduced-motion: keep a fully-assembled, static trailer, no scroll pin/scrub */
+.section-head h2 {
+  margin: 0.4rem 0 0;
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.section-head p {
+  margin: 0;
+  max-width: 26rem;
+  color: var(--paper-dim);
+  font-size: 0.95rem;
+}
+
+.spec-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15.5rem, 1fr));
+  gap: 1px;
+  background: var(--hair-soft);
+  border: 1px solid var(--hair-soft);
+}
+
+.spec-card {
+  background: var(--ink);
+  padding: 1.6rem 1.5rem;
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+.spec-card .mark {
+  font-family: "Plex Mono", monospace;
+  font-size: 0.72rem;
+  color: var(--signal);
+  letter-spacing: 0.04em;
+}
+
+.spec-card h3 {
+  margin: 0.6rem 0 0.55rem;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+
+.spec-card p {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--paper-dim);
+}
+
+.stack-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.stack-col h3 {
+  font-family: "Plex Mono", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+  margin: 0 0 1rem;
+  font-weight: 500;
+}
+
+.stack-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--hair-soft);
+}
+
+.stack-list li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--hair-soft);
+  font-size: 0.9rem;
+}
+
+.stack-list .name { color: var(--paper); }
+.stack-list .ver {
+  font-family: "Plex Mono", monospace;
+  font-size: 0.78rem;
+  color: var(--paper-faint);
+  white-space: nowrap;
+}
+
+/* ---------- footer ---------- */
+
+footer {
+  padding: 2.5rem 0 3rem;
+}
+
+footer .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+  font-family: "Plex Mono", monospace;
+  font-size: 0.72rem;
+  color: var(--paper-faint);
+  letter-spacing: 0.02em;
+}
+
+/* ---------- motion ---------- */
+
 @media (prefers-reduced-motion: reduce) {
-  .hero { height: 100vh; }
-  .hero-stage { position: relative; }
+  .status-pill .dot { animation: none; }
+  .spec-card { opacity: 1; transform: none; }
 }
