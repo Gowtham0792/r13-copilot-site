@@ -84,7 +84,7 @@
     scrollTrigger: {
       trigger: "#hero",
       start: "top top",
-      end: "+=900",
+      end: "+=420",
       scrub: 0.5,
       pin: true,
     },
@@ -94,8 +94,8 @@
     .to(".hero-glow .b2", { scale: 1.2, opacity: 0.18, ease: "none", duration: 1 }, 0)
     // the whole hero body shrinks/fades away while the docked header
     // fades in — reads as the title folding into place
-    .to("#heroInner", { scale: 0.82, opacity: 0, y: -40, ease: "power1.in", duration: 0.4 }, 0.45)
-    .to("#dockedHeader", { opacity: 1, y: 0, ease: "none", duration: 0.3 }, 0.55);
+    .to("#heroInner", { scale: 0.82, opacity: 0, y: -40, ease: "power1.in", duration: 0.5 }, 0.15)
+    .to("#dockedHeader", { opacity: 1, y: 0, ease: "none", duration: 0.4 }, 0.3);
 
   // ---- pull-quote: pin while each word lights up in reading order ----
   gsap.timeline({
