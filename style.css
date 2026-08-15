@@ -67,35 +67,6 @@ body {
   padding: 0 clamp(1.25rem, 4vw, 3rem);
 }
 
-/* ---------- docked header ----------
-   Hidden until the hero title "folds" into it on scroll (see script.js);
-   a floating glass capsule rather than a flat full-width bar, with a
-   slow-sweeping gradient border and a light sheen for a bit of premium
-   texture. Defaults to visible/static for the no-JS / reduced-motion
-   fallback, so the page still has a usable header without animation. */
-
-.docked-header {
-  position: fixed;
-  top: 1.1rem;
-  left: 50%;
-  z-index: 40;
-  width: min(94%, 46rem);
-}
-
-.docked-header-inner {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.85rem 1.5rem;
-  border-radius: 999px;
-  background: rgba(20, 20, 31, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(18px);
-  box-shadow: 0 14px 36px -12px rgba(0, 0, 0, 0.6);
-  overflow: hidden;
-}
-
 /* ---------- reusable sheen ----------
    A faint diagonal light sweep across a card's glass. Apply the .sheen
    class to any element that already has position:relative + overflow:
@@ -127,129 +98,35 @@ body {
   38%, 100% { left: 140%; }
 }
 
-.wordmark {
+/* ---------- reveal hero ----------
+   Replaces the old hero entirely. A sticky heading stays in view (via
+   plain CSS position:sticky — no JS pin/fold logic needed) while a tall
+   list of phrases scrolls past beside it. Each phrase is painted with a
+   gradient that's fixed to the *viewport* (background-attachment:
+   fixed), not the element — so as the page scrolls the text underneath
+   moves through that fixed gradient band and "lights up" in accent
+   color right as it crosses the vertical center of the screen, then
+   dims again. The whole effect is pure CSS, no scroll listener at all. */
+
+.reveal {
   position: relative;
-  z-index: 1;
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
 }
 
-.wordmark .dim { color: var(--text-dim); font-weight: 500; }
-.wordmark .accent { color: var(--accent); }
-
-.badge {
-  position: relative;
-  z-index: 1;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  font-family: "Plex Mono", monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.06em;
-  color: var(--text-dim);
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 0.4rem 0.85rem 0.4rem 0.6rem;
-}
-
-.badge .dot {
-  position: relative;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--coral);
-}
-
-.badge .dot::after {
-  content: "";
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  border: 1.5px solid var(--coral);
-  animation: dot-ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-
-@keyframes dot-ping {
-  0% { transform: scale(0.55); opacity: 0.9; }
-  70%, 100% { transform: scale(1.9); opacity: 0; }
-}
-
-/* ---------- hero ---------- */
-
-.hero {
-  position: relative;
-  /* kept compact on purpose — the hero is pinned while it folds into the
-     header, and a pinned section's own natural height adds directly to
-     how much "nothing is happening" scroll sits between the fold
-     finishing and the next section being able to appear. */
-  padding: clamp(2.75rem, 6vw, 4.5rem) 0 clamp(2.25rem, 4vw, 3rem);
-  overflow: hidden;
-}
-
-.hero-glow {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.hero-glow span {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(90px);
-  opacity: 0.55;
-}
-
-.hero-glow .b1 {
-  width: 34rem;
-  height: 34rem;
-  top: -10rem;
-  left: 50%;
-  transform: translateX(-68%);
-  background: radial-gradient(circle, var(--accent), transparent 70%);
-  animation: drift-a 16s ease-in-out infinite;
-}
-
-.hero-glow .b2 {
-  width: 24rem;
-  height: 24rem;
-  top: 4rem;
-  left: 50%;
-  transform: translateX(20%);
-  background: radial-gradient(circle, var(--coral), transparent 70%);
-  opacity: 0.28;
-  animation: drift-b 20s ease-in-out infinite;
-}
-
-@keyframes drift-a {
-  0%, 100% { transform: translateX(-68%) translateY(0); }
-  50% { transform: translateX(-58%) translateY(1.5rem); }
-}
-@keyframes drift-b {
-  0%, 100% { transform: translateX(20%) translateY(0); }
-  50% { transform: translateX(12%) translateY(-1rem); }
-}
-
-.hero-inner {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.reveal-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: clamp(2rem, 5vw, 4rem);
-}
-
-.hero-copy {
-  text-align: left;
-  flex: 1 1 auto;
-  min-width: 0;
+  align-items: start;
 }
 
 @media (max-width: 860px) {
-  .hero-inner { flex-direction: column; text-align: center; }
-  .hero-copy { text-align: center; }
+  .reveal-inner { grid-template-columns: 1fr; }
+}
+
+.reveal-heading {
+  position: sticky;
+  top: 38vh;
+  padding: 2rem 0;
 }
 
 .eyebrow {
@@ -264,138 +141,56 @@ body {
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 0.4rem 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 h1 {
   margin: 0;
-  font-size: clamp(2.5rem, 6vw, 4.75rem);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
   font-weight: 800;
   letter-spacing: -0.035em;
   line-height: 1;
-  white-space: nowrap;
 }
 
-h1 .word.accent { color: var(--accent); }
-
-/* Each character is two nested spans: an outer one the scroll-triggered
-   entrance animates (opacity/position/rotation), and an inner one that
-   carries its own continuous idle float — kept on separate elements so
-   the two animations never fight over the same transform. */
-h1 .letter-outer {
-  display: inline-block;
-  will-change: transform, opacity;
-}
-
-h1 .letter-inner {
-  display: inline-block;
-  will-change: transform;
-}
-
-.hero-tagline {
-  margin: 1.5rem 0 0;
-  max-width: 30ch;
-  font-size: clamp(1.15rem, 2.4vw, 1.6rem);
-  font-weight: 550;
-  letter-spacing: -0.01em;
-  color: var(--text);
-}
-
-.hero-sub {
-  margin: 1.25rem 0 0;
-  max-width: 30rem;
+.reveal-sub {
+  margin: 1.1rem 0 0;
+  max-width: 26rem;
   font-size: clamp(1rem, 1.6vw, 1.15rem);
   color: var(--text-dim);
 }
 
+.reveal-list {
+  list-style: none;
+  margin: 0;
+  padding: 30vh 0;
+}
+
+.reveal-list li {
+  min-height: 42vh;
+  display: flex;
+  align-items: center;
+  font-size: clamp(1.6rem, 3.4vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+
+  background: linear-gradient(
+    180deg,
+    var(--text-faint) 0 calc(50vh - 0.6em),
+    var(--accent) calc(50vh - 0.55em) calc(50vh + 0.55em),
+    var(--text-faint) calc(50vh + 0.6em)
+  );
+  background-attachment: fixed;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 @media (max-width: 860px) {
-  .hero-tagline, .hero-sub { margin-left: auto; margin-right: auto; }
-}
-
-/* ---------- hero centerpiece: layered brake-rotor discs ----------
-   Three vented/slotted rings (a nod to the actual subject — brake
-   rotors) plus a glowing hub, each wrapped in its own .disc-layer.
-   Real multi-layer parallax needs several independently-moving planes,
-   not one rigid object translating as a block — script.js moves each
-   .disc-layer by its own multiplier (data-depth) so the front layer
-   swings noticeably further than the back one, which is what actually
-   sells depth. Each disc's own spin is a plain CSS animation on the
-   *inner* element, kept separate from the parallax-driven outer layer
-   so the two transforms never collide (same split used for the hero
-   title's letters). */
-
-.hero-object {
-  flex: none;
-  position: relative;
-  width: clamp(12rem, 22vw, 19rem);
-  height: clamp(12rem, 22vw, 19rem);
-}
-
-@media (max-width: 860px) {
-  .hero-object { margin: clamp(1.5rem, 5vw, 3rem) auto 0; }
-}
-
-.disc-layer {
-  position: absolute;
-  inset: 0;
-}
-
-.disc {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.disc-back {
-  width: 100%;
-  height: 100%;
-  background: repeating-conic-gradient(from 0deg, var(--accent) 0deg 6deg, transparent 6deg 18deg);
-  -webkit-mask-image: radial-gradient(closest-side, transparent 58%, #000 60%);
-  mask-image: radial-gradient(closest-side, transparent 58%, #000 60%);
-  opacity: 0.32;
-  filter: blur(2.5px);
-  animation: disc-spin 46s linear infinite;
-}
-
-.disc-mid {
-  width: 72%;
-  height: 72%;
-  background: repeating-conic-gradient(from 10deg, var(--coral) 0deg 8deg, transparent 8deg 22deg);
-  -webkit-mask-image: radial-gradient(closest-side, transparent 50%, #000 52%);
-  mask-image: radial-gradient(closest-side, transparent 50%, #000 52%);
-  opacity: 0.6;
-  animation: disc-spin-reverse 28s linear infinite;
-}
-
-.disc-front {
-  width: 46%;
-  height: 46%;
-  background: repeating-conic-gradient(from 0deg, var(--accent) 0deg 10deg, transparent 10deg 26deg);
-  -webkit-mask-image: radial-gradient(closest-side, transparent 40%, #000 42%);
-  mask-image: radial-gradient(closest-side, transparent 40%, #000 42%);
-  box-shadow: 0 0 46px -6px var(--accent-soft);
-  animation: disc-spin 15s linear infinite;
-}
-
-.disc-core {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 14%;
-  height: 14%;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(circle at 34% 30%, #ffffff, var(--accent) 55%, #322f9c 100%);
-  box-shadow: 0 10px 26px -6px rgba(109, 108, 255, 0.75);
-}
-
-@keyframes disc-spin {
-  to { transform: translate(-50%, -50%) rotate(360deg); }
-}
-@keyframes disc-spin-reverse {
-  to { transform: translate(-50%, -50%) rotate(-360deg); }
+  .reveal-heading { position: static; text-align: center; padding: 0 0 1rem; }
+  .reveal-sub { margin-left: auto; margin-right: auto; }
+  .reveal-list { padding: 10vh 0; }
+  .reveal-list li { min-height: 30vh; justify-content: center; text-align: center; }
 }
 
 /* ---------- sections ---------- */
@@ -586,9 +381,6 @@ footer .wrap {
 /* ---------- motion ---------- */
 
 @media (prefers-reduced-motion: reduce) {
-  .badge .dot::after { animation: none; opacity: 0; }
   .sheen::after { animation: none; opacity: 0; }
-  .hero-glow span { animation: none; }
-  .disc-back, .disc-mid, .disc-front { animation: none; }
   .bento-card { opacity: 1; transform: none; }
 }
