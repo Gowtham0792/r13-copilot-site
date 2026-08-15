@@ -42,7 +42,9 @@
   --paper-faint: #565c64;
   --signal: #4a86ff;
   --signal-dim: rgba(74, 134, 255, 0.14);
+  --signal-glow: rgba(74, 134, 255, 0.35);
   --amber: #ffb238;
+  --pass: #35d08f;
   color-scheme: dark;
 }
 
@@ -155,6 +157,17 @@ a { color: inherit; }
   z-index: 2;
 }
 
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: clamp(2.5rem, 6vw, 4.5rem);
+  align-items: center;
+}
+
+@media (max-width: 960px) {
+  .hero-grid { grid-template-columns: 1fr; }
+}
+
 .eyebrow {
   display: flex;
   flex-wrap: wrap;
@@ -197,22 +210,51 @@ h1 .signal { color: var(--signal); }
   color: var(--paper-dim);
 }
 
-/* live waveform readout */
+/* instrument panel */
+
+.panel-frame {
+  position: relative;
+  padding: 14px;
+}
+
+.panel-frame::before,
+.panel-frame::after,
+.panel-frame .corner-tl,
+.panel-frame .corner-br {
+  content: "";
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border: 1.5px solid var(--signal);
+  opacity: 0.7;
+}
+
+.panel-frame::before { top: 0; left: 0; border-right: none; border-bottom: none; }
+.panel-frame::after { bottom: 0; right: 0; border-left: none; border-top: none; }
+
+.panel-glow {
+  position: absolute;
+  inset: -20% -10%;
+  background: radial-gradient(closest-side, var(--signal-glow), transparent 70%);
+  filter: blur(50px);
+  opacity: 0.55;
+  z-index: -1;
+}
 
 .readout {
   position: relative;
-  margin-top: clamp(3rem, 7vw, 4.5rem);
   border: 1px solid var(--hair);
-  border-radius: 4px;
+  border-radius: 6px;
   background: linear-gradient(180deg, var(--panel), var(--ink));
   overflow: hidden;
+  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.6);
 }
 
 .readout-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.7rem 1rem;
+  padding: 0.8rem 1.1rem;
   border-bottom: 1px solid var(--hair-soft);
   font-family: "Plex Mono", monospace;
   font-size: 0.68rem;
@@ -221,21 +263,67 @@ h1 .signal { color: var(--signal); }
   color: var(--paper-faint);
 }
 
-.readout-head .live {
+.readout-head .sample {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   color: var(--amber);
+}
+
+.readout-head .sample .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--amber);
+  animation: dot-pulse 2.4s ease-in-out infinite;
 }
 
 .readout canvas {
   display: block;
   width: 100%;
-  height: 168px;
+  height: 208px;
 }
+
+.readout-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--hair-soft);
+}
+
+.readout-stats .stat {
+  padding: 1rem 1.1rem;
+  border-left: 1px solid var(--hair-soft);
+}
+
+.readout-stats .stat:first-child { border-left: none; }
+
+.readout-stats .label {
+  font-family: "Plex Mono", monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--paper-faint);
+}
+
+.readout-stats .value {
+  margin-top: 0.35rem;
+  font-family: "Plex Mono", monospace;
+  font-size: clamp(1.1rem, 2.4vw, 1.5rem);
+  font-weight: 600;
+  color: var(--paper);
+}
+
+.readout-stats .value.pass { color: var(--pass); }
 
 /* ---------- sections ---------- */
 
 section.block {
   padding: clamp(3.5rem, 9vw, 6rem) 0;
   border-bottom: 1px solid var(--hair-soft);
+}
+
+section.block.alt {
+  background: var(--panel);
 }
 
 .section-head {
@@ -278,15 +366,29 @@ section.block {
 
 .spec-card {
   background: var(--ink);
-  padding: 1.6rem 1.5rem;
+  padding: 1.8rem 1.6rem;
   opacity: 0;
   transform: translateY(14px);
+  transition: background-color 0.25s ease, transform 0.25s ease;
+}
+
+.spec-card:hover {
+  background: var(--panel);
+  transform: translateY(-3px);
+}
+
+.spec-card .icon {
+  width: 30px;
+  height: 30px;
+  color: var(--signal);
 }
 
 .spec-card .mark {
+  display: block;
+  margin-top: 0.9rem;
   font-family: "Plex Mono", monospace;
   font-size: 0.72rem;
-  color: var(--signal);
+  color: var(--paper-faint);
   letter-spacing: 0.04em;
 }
 

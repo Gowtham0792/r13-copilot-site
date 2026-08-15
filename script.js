@@ -54,30 +54,42 @@
       ctx.clearRect(0, 0, w, h);
 
       var mid = h / 2;
-      ctx.strokeStyle = "#4a86ff";
-      ctx.lineWidth = 1.6;
-      ctx.beginPath();
-      for (var x = 0; x <= w; x += 2) {
-        var y = mid + sample(x);
-        if (x === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
 
-      // faint fill under the trace
-      ctx.lineTo(w, h);
-      ctx.lineTo(0, h);
-      ctx.closePath();
-      ctx.fillStyle = "rgba(74, 134, 255, 0.06)";
-      ctx.fill();
-
-      // baseline
+      // baseline grid (drawn first, under the trace)
       ctx.strokeStyle = "#1b1f24";
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(0, mid);
       ctx.lineTo(w, mid);
       ctx.stroke();
+
+      // fill under the trace
+      ctx.beginPath();
+      ctx.moveTo(0, mid + sample(0));
+      for (var x = 0; x <= w; x += 2) ctx.lineTo(x, mid + sample(x));
+      ctx.lineTo(w, h);
+      ctx.lineTo(0, h);
+      ctx.closePath();
+      var fillGrad = ctx.createLinearGradient(0, 0, 0, h);
+      fillGrad.addColorStop(0, "rgba(74, 134, 255, 0.22)");
+      fillGrad.addColorStop(1, "rgba(74, 134, 255, 0)");
+      ctx.fillStyle = fillGrad;
+      ctx.fill();
+
+      // glowing trace line
+      ctx.beginPath();
+      for (var xi = 0; xi <= w; xi += 2) {
+        var yi = mid + sample(xi);
+        if (xi === 0) ctx.moveTo(xi, yi);
+        else ctx.lineTo(xi, yi);
+      }
+      ctx.lineJoin = "round";
+      ctx.shadowColor = "rgba(74, 134, 255, 0.9)";
+      ctx.shadowBlur = 8;
+      ctx.strokeStyle = "#7db0ff";
+      ctx.lineWidth = 2.2;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
 
       if (!reduceMotion) {
         t += 1.1;
@@ -86,6 +98,27 @@
     }
     draw();
   }
+
+  // ---- stat tiles count up once on load ----
+  var stats = document.querySelectorAll(".readout-stats .value[data-count]");
+  stats.forEach(function (el) {
+    var target = parseFloat(el.getAttribute("data-count"));
+    var suffix = el.getAttribute("data-suffix") || "";
+    if (reduceMotion || typeof gsap === "undefined") {
+      el.textContent = target.toFixed(2) + suffix;
+      return;
+    }
+    var obj = { v: 0 };
+    gsap.to(obj, {
+      v: target,
+      duration: 1.6,
+      delay: 0.3,
+      ease: "power2.out",
+      onUpdate: function () {
+        el.textContent = obj.v.toFixed(2) + (obj.v >= target - 0.001 ? suffix : "");
+      },
+    });
+  });
 
   // ---- scroll-revealed spec cards ----
   if (!reduceMotion && typeof gsap !== "undefined") {
