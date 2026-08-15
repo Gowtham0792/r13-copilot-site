@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>R13 Copilot</title>
 <meta name="description" content="R13 Copilot — a desktop tool for ECE R13 / AIS 113 trailer brake certification testing." />
-<link rel="stylesheet" href="style.css?v=5" />
+<link rel="stylesheet" href="style.css?v=6" />
 </head>
 <body>
 
@@ -14,14 +14,14 @@
   <div class="badge"><span class="dot"></span>In development</div>
 </header>
 
-<section class="hero">
+<section class="hero" id="hero">
   <div class="hero-glow" aria-hidden="true"><span class="b1"></span><span class="b2"></span></div>
   <div class="wrap hero-inner">
-    <span class="eyebrow">ECE R13 · AIS 113 · O3/O4 trailers</span>
+    <span class="eyebrow" id="heroEyebrow">ECE R13 · AIS 113 · O3/O4 trailers</span>
 
-    <h1><span class="thin">Brake certification,</span> <span class="bold">read</span> <span class="accent">straight from the regulation.</span></h1>
+    <h1 id="heroTitle"><span class="thin">Brake certification,</span> <span class="bold">read</span> <span class="accent">straight from the regulation.</span></h1>
 
-    <p class="hero-sub">
+    <p class="hero-sub" id="heroSub">
       A desktop tool for planning, measuring, and calculating ECE&nbsp;R13
       Annex&nbsp;13 / AIS&nbsp;113 trailer brake performance — every formula
       cross-checked against the source regulation text, not summarized from
@@ -101,9 +101,26 @@
   </div>
 </section>
 
-<section class="pullquote">
+<section class="pullquote" id="pullquote">
   <div class="wrap">
-    <blockquote>&ldquo;Not a formula transcribed from a summary &mdash; <span class="accent">the regulation text itself</span>, cross-checked line by line.&rdquo;</blockquote>
+    <blockquote id="pullquoteText">
+      <span class="word">&ldquo;Not</span>
+      <span class="word">a</span>
+      <span class="word">formula</span>
+      <span class="word">transcribed</span>
+      <span class="word">from</span>
+      <span class="word">a</span>
+      <span class="word">summary</span>
+      <span class="word">&mdash;</span>
+      <span class="word accent">the</span>
+      <span class="word accent">regulation</span>
+      <span class="word accent">text</span>
+      <span class="word accent">itself,</span>
+      <span class="word">cross-checked</span>
+      <span class="word">line</span>
+      <span class="word">by</span>
+      <span class="word">line.&rdquo;</span>
+    </blockquote>
   </div>
 </section>
 
@@ -149,6 +166,6 @@
 
 <script src="vendor/gsap/gsap.min.js"></script>
 <script src="vendor/gsap/ScrollTrigger.min.js"></script>
-<script src="script.js?v=5"></script>
+<script src="script.js?v=6"></script>
 </body>
 </html>

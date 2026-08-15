@@ -322,7 +322,12 @@ section.block {
   color: var(--text);
 }
 
-.pullquote blockquote .accent { color: var(--accent); }
+.pullquote blockquote .word {
+  display: inline-block;
+  opacity: 0.24;
+}
+
+.pullquote blockquote .word.accent { color: var(--accent); }
 
 /* stack panels */
 
