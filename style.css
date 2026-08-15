@@ -67,18 +67,27 @@ body {
   padding: 0 clamp(1.25rem, 4vw, 3rem);
 }
 
-/* ---------- topbar ---------- */
+/* ---------- docked header ----------
+   Hidden until the hero title "folds" into it on scroll (see script.js);
+   defaults to visible with no transform for the no-JS / reduced-motion
+   fallback, so the page still has a usable header without animation. */
 
-.topbar {
-  position: sticky;
+.docked-header {
+  position: fixed;
   top: 0;
-  z-index: 30;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  background: rgba(11, 11, 18, 0.72);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+
+.docked-header-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.3rem clamp(1.25rem, 4vw, 3rem);
-  background: rgba(11, 11, 18, 0.7);
-  backdrop-filter: blur(14px);
+  padding: 1.1rem clamp(1.25rem, 4vw, 3rem);
 }
 
 .wordmark {
@@ -192,19 +201,37 @@ body {
 
 h1 {
   margin: 0 auto;
-  max-width: 22ch;
-  font-size: clamp(2.6rem, 6.4vw, 5rem);
-  letter-spacing: -0.03em;
-  line-height: 1.03;
-  text-wrap: balance;
+  font-size: clamp(3.4rem, 11vw, 8rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  white-space: nowrap;
 }
 
-h1 .thin { font-weight: 260; color: var(--text-dim); }
-h1 .bold { font-weight: 750; }
-h1 .accent { font-weight: 750; color: var(--accent); }
+.brand-shimmer {
+  background: linear-gradient(100deg, var(--accent) 0%, var(--coral) 30%, var(--accent) 60%, var(--coral) 90%);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: brand-shimmer-move 7s linear infinite;
+}
+
+@keyframes brand-shimmer-move {
+  to { background-position: -300% center; }
+}
+
+.hero-tagline {
+  margin: 1.5rem auto 0;
+  max-width: 30ch;
+  font-size: clamp(1.15rem, 2.4vw, 1.6rem);
+  font-weight: 550;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
 
 .hero-sub {
-  margin: 1.75rem auto 0;
+  margin: 1.25rem auto 0;
   max-width: 36rem;
   font-size: clamp(1rem, 1.6vw, 1.15rem);
   color: var(--text-dim);
@@ -401,4 +428,5 @@ footer .wrap {
   .badge .dot { animation: none; }
   .hero-glow span { animation: none; }
   .bento-card { opacity: 1; transform: none; }
+  .brand-shimmer { animation: none; background-position: 0 center; }
 }
