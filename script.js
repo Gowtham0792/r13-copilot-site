@@ -70,7 +70,7 @@
   gsap.set("#heroSub", { opacity: 0, y: 18 });
   gsap.set("#heroTagline", { opacity: 0, y: 14 });
   gsap.set("#heroEyebrow", { opacity: 0, y: 10 });
-  gsap.set("#dockedHeader", { opacity: 0, y: -12 });
+  gsap.set("#dockedHeader", { xPercent: -50, opacity: 0, y: -14, scale: 0.92, filter: "blur(6px)" });
 
   var introTl = gsap.timeline({ delay: 0.1 });
   introTl
@@ -95,7 +95,11 @@
     // the whole hero body shrinks/fades away while the docked header
     // fades in — reads as the title folding into place
     .to("#heroInner", { scale: 0.82, opacity: 0, y: -40, ease: "power1.in", duration: 0.5 }, 0.15)
-    .to("#dockedHeader", { opacity: 1, y: 0, ease: "none", duration: 0.4 }, 0.3);
+    .to(
+      "#dockedHeader",
+      { xPercent: -50, opacity: 1, y: 0, scale: 1, filter: "blur(0px)", ease: "none", duration: 0.4 },
+      0.3
+    );
 
   // ---- pull-quote: pin while each word lights up in reading order ----
   gsap.timeline({

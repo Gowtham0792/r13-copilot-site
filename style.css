@@ -69,28 +69,75 @@ body {
 
 /* ---------- docked header ----------
    Hidden until the hero title "folds" into it on scroll (see script.js);
-   defaults to visible with no transform for the no-JS / reduced-motion
+   a floating glass capsule rather than a flat full-width bar, with a
+   slow-sweeping gradient border and a light sheen for a bit of premium
+   texture. Defaults to visible/static for the no-JS / reduced-motion
    fallback, so the page still has a usable header without animation. */
 
 .docked-header {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 1.1rem;
+  left: 50%;
   z-index: 40;
-  background: rgba(11, 11, 18, 0.72);
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--line);
+  width: min(94%, 46rem);
 }
 
 .docked-header-inner {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.1rem clamp(1.25rem, 4vw, 3rem);
+  padding: 0.85rem 1.5rem;
+  border-radius: 999px;
+  background: rgba(20, 20, 31, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 14px 36px -12px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+}
+
+/* slow-sweeping gradient ring around the capsule edge */
+.docked-header-inner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(from 0deg, transparent 0%, var(--accent) 12%, transparent 28%, var(--coral) 55%, transparent 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.7;
+  animation: header-ring-spin 7s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes header-ring-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* faint light sheen sweeping across the glass */
+.docked-header-inner::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 35%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.09), transparent);
+  transform: skewX(-18deg);
+  animation: header-sheen 6.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes header-sheen {
+  0% { left: -60%; }
+  38%, 100% { left: 140%; }
 }
 
 .wordmark {
+  position: relative;
+  z-index: 1;
   font-size: 1rem;
   font-weight: 700;
   letter-spacing: -0.01em;
@@ -100,30 +147,41 @@ body {
 .wordmark .accent { color: var(--accent); }
 
 .badge {
+  position: relative;
+  z-index: 1;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.55rem;
   font-family: "Plex Mono", monospace;
   font-size: 0.7rem;
   letter-spacing: 0.06em;
   color: var(--text-dim);
-  background: var(--surface);
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 0.4rem 0.85rem 0.4rem 0.65rem;
+  padding: 0.4rem 0.85rem 0.4rem 0.6rem;
 }
 
 .badge .dot {
+  position: relative;
   width: 6px;
   height: 6px;
   border-radius: 50%;
   background: var(--coral);
-  animation: dot-pulse 2.4s ease-in-out infinite;
 }
 
-@keyframes dot-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
+.badge .dot::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1.5px solid var(--coral);
+  animation: dot-ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes dot-ping {
+  0% { transform: scale(0.55); opacity: 0.9; }
+  70%, 100% { transform: scale(1.9); opacity: 0; }
 }
 
 /* ---------- hero ---------- */
@@ -428,7 +486,9 @@ footer .wrap {
 /* ---------- motion ---------- */
 
 @media (prefers-reduced-motion: reduce) {
-  .badge .dot { animation: none; }
+  .badge .dot::after { animation: none; opacity: 0; }
+  .docked-header-inner::before { animation: none; }
+  .docked-header-inner::after { animation: none; opacity: 0; }
   .hero-glow span { animation: none; }
   .bento-card { opacity: 1; transform: none; }
 }
