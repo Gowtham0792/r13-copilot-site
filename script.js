@@ -63,33 +63,39 @@
     stagger: { each: 0.07, from: "start" },
   });
 
-  // ---- hero: pin while the title settles in, then folds into the header ----
+  // ---- hero entrance: plays immediately on load, NOT tied to scroll ----
+  // (this was the bug: tying the initial reveal to scroll progress meant
+  // scrollY=0 on page load == progress 0 == still hidden, leaving the
+  // hero blank until the visitor actually scrolled)
   gsap.set("#heroSub", { opacity: 0, y: 18 });
   gsap.set("#heroTagline", { opacity: 0, y: 14 });
   gsap.set("#heroEyebrow", { opacity: 0, y: 10 });
   gsap.set("#dockedHeader", { opacity: 0, y: -12 });
 
+  var introTl = gsap.timeline({ delay: 0.1 });
+  introTl
+    .to("#heroEyebrow", { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 0)
+    .to(letterOuters, { opacity: 1, y: 0, rotateZ: 0, stagger: 0.028, duration: 0.55, ease: "power2.out" }, 0.1)
+    .to("#heroTagline", { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 0.45)
+    .to("#heroSub", { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 0.55);
+
+  // ---- hero: pin, hold, then fold the title down into the docked header ----
   var heroTl = gsap.timeline({
     scrollTrigger: {
       trigger: "#hero",
       start: "top top",
-      end: "+=1100",
+      end: "+=900",
       scrub: 0.5,
       pin: true,
     },
   });
   heroTl
-    // settle in — letters fly/rotate into place one after another
-    .to("#heroEyebrow", { opacity: 1, y: 0, ease: "none", duration: 0.12 }, 0)
-    .to(letterOuters, { opacity: 1, y: 0, rotateZ: 0, stagger: 0.018, ease: "none", duration: 0.3 }, 0)
-    .to("#heroTagline", { opacity: 1, y: 0, ease: "none", duration: 0.2 }, 0.2)
-    .to("#heroSub", { opacity: 1, y: 0, ease: "none", duration: 0.2 }, 0.32)
     .to(".hero-glow .b1", { scale: 1.15, opacity: 0.35, ease: "none", duration: 1 }, 0)
     .to(".hero-glow .b2", { scale: 1.2, opacity: 0.18, ease: "none", duration: 1 }, 0)
-    // hold, then fold: the whole hero body shrinks/fades away while the
-    // docked header fades in — reads as the title folding into place
-    .to("#heroInner", { scale: 0.82, opacity: 0, y: -40, ease: "power1.in", duration: 0.3 }, 0.62)
-    .to("#dockedHeader", { opacity: 1, y: 0, ease: "none", duration: 0.25 }, 0.68);
+    // the whole hero body shrinks/fades away while the docked header
+    // fades in — reads as the title folding into place
+    .to("#heroInner", { scale: 0.82, opacity: 0, y: -40, ease: "power1.in", duration: 0.4 }, 0.45)
+    .to("#dockedHeader", { opacity: 1, y: 0, ease: "none", duration: 0.3 }, 0.55);
 
   // ---- pull-quote: pin while each word lights up in reading order ----
   gsap.timeline({
