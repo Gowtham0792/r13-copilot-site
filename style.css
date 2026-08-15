@@ -1,0 +1,214 @@
+/* R13 Copilot showcase site — single dark theme, no light-mode branch. */
+
+:root {
+  --bg-0: #07080a;
+  --bg-1: #0d1013;
+  --bg-2: #14181c;
+  --line: #23282e;
+  --text: #eef1f4;
+  --text-muted: #8a929c;
+  --accent: #2f7dff;
+  --accent-soft: rgba(47, 125, 255, 0.18);
+  --brake: #ff3b3b;
+  --brake-soft: rgba(255, 59, 59, 0.55);
+  --road: #101418;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg-0);
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg-0);
+  color: var(--text);
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ---------- top bar ---------- */
+
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 2rem;
+  pointer-events: none;
+}
+
+.wordmark {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.wordmark span {
+  color: var(--accent);
+}
+
+/* ---------- hero / pinned scroll scene ---------- */
+
+.hero {
+  position: relative;
+  height: 340vh;
+}
+
+.hero-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(60% 45% at 50% 32%, rgba(47, 125, 255, 0.14), transparent 70%),
+    linear-gradient(180deg, var(--bg-0) 0%, var(--bg-1) 55%, var(--bg-2) 100%);
+}
+
+.hero-copy {
+  position: absolute;
+  top: 16%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 5;
+  width: 100%;
+  padding: 0 1.5rem;
+}
+
+.hero-copy h1 {
+  margin: 0;
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.hero-copy h1 .accent {
+  color: var(--accent);
+}
+
+.hero-copy p {
+  margin: 0.9rem auto 0;
+  max-width: 34rem;
+  color: var(--text-muted);
+  font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+}
+
+.scroll-cue {
+  position: absolute;
+  bottom: 2.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.scroll-cue .stroke {
+  width: 1px;
+  height: 34px;
+  background: linear-gradient(180deg, var(--text-muted), transparent);
+  animation: cue-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes cue-pulse {
+  0%, 100% { opacity: 0.25; transform: scaleY(0.7); }
+  50% { opacity: 1; transform: scaleY(1); }
+}
+
+/* ---------- road backdrop ---------- */
+
+.road {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 34%;
+  background: linear-gradient(180deg, transparent, var(--road) 40%);
+  z-index: 1;
+}
+
+.road::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.14) 0,
+    rgba(255, 255, 255, 0.14) 46px,
+    transparent 46px,
+    transparent 116px
+  );
+  background-position: 0 62%;
+  height: 2px;
+  top: 58%;
+  opacity: 0.6;
+}
+
+/* ---------- the animated scene svg ---------- */
+
+.scene {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1600px;
+  height: 62vh;
+  min-height: 380px;
+}
+
+.scene svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+.chassis .body-panel { fill: url(#bodyGrad); }
+.chassis .body-stripe { fill: var(--accent); opacity: 0.9; }
+.chassis .body-shade { fill: #000; opacity: 0.14; }
+.chassis .decal { fill: rgba(255,255,255,0.86); font-family: inherit; font-weight: 700; letter-spacing: 0.16em; }
+.chassis .kingpin { fill: #1c1f24; }
+.chassis .landing-gear { stroke: #2a2e34; stroke-width: 5; stroke-linecap: round; }
+.chassis .underride { fill: #14171b; }
+.chassis .mudflap { fill: #0d0f12; }
+
+.taillight { fill: var(--brake); opacity: 0.28; }
+
+.wheel .tire { fill: url(#tireGrad); }
+.wheel .rim { fill: url(#rimGrad); }
+.wheel .spokes { stroke: #454b52; }
+.wheel .hub { fill: #d7dade; }
+.wheel .caliper { fill: #17191c; }
+.wheel .spin-blur { fill: url(#blurGrad); opacity: 0; }
+.wheel .caliper-glow { fill: var(--brake); filter: blur(5px); opacity: 0; }
+
+.scene-shadow { opacity: 0.6; }
+
+/* prefers-reduced-motion: keep a fully-assembled, static trailer, no scroll pin/scrub */
+@media (prefers-reduced-motion: reduce) {
+  .hero { height: 100vh; }
+  .hero-stage { position: relative; }
+}

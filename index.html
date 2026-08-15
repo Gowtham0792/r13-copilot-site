@@ -4,30 +4,128 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>R13 Copilot</title>
-<style>
-  :root { color-scheme: light dark; }
-  body {
-    margin: 0;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-    background: #fafafa;
-    color: #1c1c1e;
-  }
-  @media (prefers-color-scheme: dark) {
-    body { background: #1c1c1e; color: #f5f5f7; }
-  }
-  main { text-align: center; padding: 2rem; }
-  h1 { font-size: 1.75rem; margin-bottom: 0.5rem; }
-  p { opacity: 0.7; margin: 0; }
-</style>
+<meta name="description" content="R13 Copilot — ECE R13 / AIS 113 trailer brake certification testing." />
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<main>
-  <h1>R13 Copilot</h1>
-  <p>Site coming soon.</p>
-</main>
+
+<header class="topbar">
+  <div class="wordmark">R13 <span>Copilot</span></div>
+</header>
+
+<section class="hero">
+  <div class="hero-stage">
+
+    <div class="hero-copy" id="heroCopy">
+      <h1>Brake certification, <span class="accent">engineered.</span></h1>
+      <p>A desktop tool for ECE&nbsp;R13 / AIS&nbsp;113 trailer brake testing.</p>
+    </div>
+
+    <div class="scroll-cue" id="scrollCue">
+      <span>Scroll</span>
+      <span class="stroke"></span>
+    </div>
+
+    <div class="road" aria-hidden="true"></div>
+
+    <div class="scene" aria-hidden="true">
+      <svg viewBox="0 0 1600 500" preserveAspectRatio="xMidYMax meet">
+        <defs>
+          <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#2c3138" />
+            <stop offset="55%" stop-color="#1c1f24" />
+            <stop offset="100%" stop-color="#101215" />
+          </linearGradient>
+
+          <radialGradient id="tireGrad" cx="35%" cy="32%" r="75%">
+            <stop offset="0%" stop-color="#3a3d42" />
+            <stop offset="55%" stop-color="#17191c" />
+            <stop offset="100%" stop-color="#050506" />
+          </radialGradient>
+
+          <radialGradient id="rimGrad" cx="35%" cy="30%" r="80%">
+            <stop offset="0%" stop-color="#e7eaee" />
+            <stop offset="45%" stop-color="#a7adb6" />
+            <stop offset="100%" stop-color="#5b616a" />
+          </radialGradient>
+
+          <radialGradient id="blurGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.5" />
+            <stop offset="70%" stop-color="#ffffff" stop-opacity="0.06" />
+            <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+          </radialGradient>
+
+          <radialGradient id="groundGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#000" stop-opacity="0.55" />
+            <stop offset="100%" stop-color="#000" stop-opacity="0" />
+          </radialGradient>
+
+          <pattern id="treadPattern" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <rect width="9" height="9" fill="none" />
+            <line x1="0" y1="0" x2="0" y2="9" stroke="#000" stroke-width="3" opacity="0.55" />
+          </pattern>
+
+          <symbol id="wheelSymbol" viewBox="-42 -42 84 84">
+            <circle class="tire" r="41" />
+            <circle r="41" fill="url(#treadPattern)" opacity="0.4" />
+            <circle class="spin-blur" r="41" />
+            <circle class="rim" r="24" stroke="#0a0a0c" stroke-width="1.5" />
+            <g class="spokes" stroke-width="3.4" stroke-linecap="round">
+              <line x1="0" y1="-19" x2="0" y2="19" />
+              <line x1="-19" y1="0" x2="19" y2="0" />
+              <line x1="-13.5" y1="-13.5" x2="13.5" y2="13.5" />
+              <line x1="-13.5" y1="13.5" x2="13.5" y2="-13.5" />
+            </g>
+            <circle class="hub" r="7" />
+            <circle class="caliper-glow" cx="0" cy="-31" r="11" />
+            <rect class="caliper" x="-6" y="-31" width="12" height="15" rx="3" stroke="#3a3f46" stroke-width="1" />
+          </symbol>
+        </defs>
+
+        <g id="trailerGroup">
+          <ellipse class="scene-shadow" cx="395" cy="462" rx="430" ry="14" fill="url(#groundGrad)" />
+
+          <g class="chassis">
+            <path class="kingpin" d="M -10 402 L 34 380 L 34 410 L -10 420 Z" />
+            <circle cx="10" cy="400" r="6" fill="#0a0a0c" />
+            <g class="landing-gear">
+              <line x1="76" y1="410" x2="76" y2="446" />
+              <line x1="102" y1="410" x2="102" y2="446" />
+            </g>
+
+            <rect class="body-panel" x="40" y="150" width="740" height="260" rx="10" />
+            <rect class="body-shade" x="40" y="356" width="740" height="54" rx="0" />
+            <rect class="body-stripe" x="40" y="330" width="740" height="18" />
+            <text class="decal" x="150" y="272" font-size="36">R13 COPILOT</text>
+
+            <rect class="underride" x="660" y="404" width="140" height="14" rx="3" />
+
+            <rect class="taillight" x="758" y="168" width="16" height="16" rx="3" />
+            <rect class="taillight" x="758" y="192" width="16" height="16" rx="3" />
+
+            <rect class="mudflap" x="586" y="398" width="30" height="46" rx="2" />
+            <rect class="mudflap" x="666" y="398" width="30" height="46" rx="2" />
+            <rect class="mudflap" x="746" y="398" width="30" height="46" rx="2" />
+          </g>
+
+          <g class="wheel" id="wheel1" style="transform: translate(600px, 420px);">
+            <use href="#wheelSymbol" />
+          </g>
+          <g class="wheel" id="wheel2" style="transform: translate(680px, 420px);">
+            <use href="#wheelSymbol" />
+          </g>
+          <g class="wheel" id="wheel3" style="transform: translate(760px, 420px);">
+            <use href="#wheelSymbol" />
+          </g>
+        </g>
+      </svg>
+    </div>
+
+  </div>
+</section>
+
+<script src="vendor/gsap/gsap.min.js"></script>
+<script src="vendor/gsap/ScrollTrigger.min.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
