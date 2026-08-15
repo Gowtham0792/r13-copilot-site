@@ -84,7 +84,11 @@
     scrollTrigger: {
       trigger: "#hero",
       start: "top top",
-      end: "+=420",
+      // kept short and spanning almost the whole pin range below — a
+      // pin that outlasts its own animation leaves a stretch of "dead"
+      // scroll with nothing on screen (the hero already folded away,
+      // the next section can't appear yet since the pin hasn't released)
+      end: "+=260",
       scrub: 0.5,
       pin: true,
     },
@@ -94,11 +98,11 @@
     .to(".hero-glow .b2", { scale: 1.2, opacity: 0.18, ease: "none", duration: 1 }, 0)
     // the whole hero body shrinks/fades away while the docked header
     // fades in — reads as the title folding into place
-    .to("#heroInner", { scale: 0.82, opacity: 0, y: -40, ease: "power1.in", duration: 0.5 }, 0.15)
+    .to("#heroInner", { scale: 0.82, opacity: 0, y: -40, ease: "power1.in", duration: 0.65 }, 0.05)
     .to(
       "#dockedHeader",
-      { xPercent: -50, opacity: 1, y: 0, scale: 1, filter: "blur(0px)", ease: "none", duration: 0.4 },
-      0.3
+      { xPercent: -50, opacity: 1, y: 0, scale: 1, filter: "blur(0px)", ease: "none", duration: 0.6 },
+      0.2
     );
 
   // ---- pull-quote: pin while each word lights up in reading order ----
