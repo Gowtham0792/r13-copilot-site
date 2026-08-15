@@ -312,54 +312,90 @@ h1 .letter-inner {
   .hero-tagline, .hero-sub { margin-left: auto; margin-right: auto; }
 }
 
-/* ---------- hero centerpiece: abstract 3D object ----------
-   Four rounded "blades" arranged pinwheel-style, tilted with real CSS
-   3D transforms (not a flat gradient trick) so they genuinely occlude
-   each other in perspective. script.js adds a slow ambient spin plus a
-   mouse-parallax tilt on top of this resting pose. */
+/* ---------- hero centerpiece: layered brake-rotor discs ----------
+   Three vented/slotted rings (a nod to the actual subject — brake
+   rotors) plus a glowing hub, each wrapped in its own .disc-layer.
+   Real multi-layer parallax needs several independently-moving planes,
+   not one rigid object translating as a block — script.js moves each
+   .disc-layer by its own multiplier (data-depth) so the front layer
+   swings noticeably further than the back one, which is what actually
+   sells depth. Each disc's own spin is a plain CSS animation on the
+   *inner* element, kept separate from the parallax-driven outer layer
+   so the two transforms never collide (same split used for the hero
+   title's letters). */
 
 .hero-object {
   flex: none;
-  width: clamp(10rem, 20vw, 17rem);
-  height: clamp(10rem, 20vw, 17rem);
-  perspective: 1000px;
+  position: relative;
+  width: clamp(12rem, 22vw, 19rem);
+  height: clamp(12rem, 22vw, 19rem);
 }
 
 @media (max-width: 860px) {
   .hero-object { margin: clamp(1.5rem, 5vw, 3rem) auto 0; }
 }
 
-.hero-object-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  transform: rotateX(52deg) rotateZ(0deg);
+.disc-layer {
+  position: absolute;
+  inset: 0;
 }
 
-.hero-object .block {
+.disc {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 78%;
-  height: 30%;
-  margin: -15% 0 0 -39%;
-  border-radius: 18%;
-  transform-style: preserve-3d;
-  box-shadow: 0 22px 40px -14px rgba(0, 0, 0, 0.55);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.hero-object .b1 { background: linear-gradient(135deg, #8f8eff, var(--accent)); transform: rotateZ(0deg) translateZ(18px); }
-.hero-object .b2 { background: linear-gradient(135deg, #ffab8f, var(--coral)); transform: rotateZ(90deg) translateZ(12px); }
-.hero-object .b3 { background: linear-gradient(135deg, var(--accent), #4b3fc4); transform: rotateZ(180deg) translateZ(6px); }
-.hero-object .b4 { background: linear-gradient(135deg, var(--coral), #c2532f); transform: rotateZ(270deg) translateZ(0px); }
+.disc-back {
+  width: 100%;
+  height: 100%;
+  background: repeating-conic-gradient(from 0deg, var(--accent) 0deg 6deg, transparent 6deg 18deg);
+  -webkit-mask-image: radial-gradient(closest-side, transparent 58%, #000 60%);
+  mask-image: radial-gradient(closest-side, transparent 58%, #000 60%);
+  opacity: 0.32;
+  filter: blur(2.5px);
+  animation: disc-spin 46s linear infinite;
+}
 
-.hero-object .block::after {
-  content: "";
+.disc-mid {
+  width: 72%;
+  height: 72%;
+  background: repeating-conic-gradient(from 10deg, var(--coral) 0deg 8deg, transparent 8deg 22deg);
+  -webkit-mask-image: radial-gradient(closest-side, transparent 50%, #000 52%);
+  mask-image: radial-gradient(closest-side, transparent 50%, #000 52%);
+  opacity: 0.6;
+  animation: disc-spin-reverse 28s linear infinite;
+}
+
+.disc-front {
+  width: 46%;
+  height: 46%;
+  background: repeating-conic-gradient(from 0deg, var(--accent) 0deg 10deg, transparent 10deg 26deg);
+  -webkit-mask-image: radial-gradient(closest-side, transparent 40%, #000 42%);
+  mask-image: radial-gradient(closest-side, transparent 40%, #000 42%);
+  box-shadow: 0 0 46px -6px var(--accent-soft);
+  animation: disc-spin 15s linear infinite;
+}
+
+.disc-core {
   position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.28), transparent 55%);
+  top: 50%;
+  left: 50%;
+  width: 14%;
+  height: 14%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle at 34% 30%, #ffffff, var(--accent) 55%, #322f9c 100%);
+  box-shadow: 0 10px 26px -6px rgba(109, 108, 255, 0.75);
+}
+
+@keyframes disc-spin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+@keyframes disc-spin-reverse {
+  to { transform: translate(-50%, -50%) rotate(-360deg); }
 }
 
 /* ---------- sections ---------- */
@@ -553,6 +589,6 @@ footer .wrap {
   .badge .dot::after { animation: none; opacity: 0; }
   .sheen::after { animation: none; opacity: 0; }
   .hero-glow span { animation: none; }
-  .hero-object-inner { transform: rotateX(52deg) rotateZ(0deg) !important; }
+  .disc-back, .disc-mid, .disc-front { animation: none; }
   .bento-card { opacity: 1; transform: none; }
 }

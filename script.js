@@ -105,46 +105,36 @@
       0.2
     );
 
-  // ---- hero centerpiece: ambient spin + real mouse parallax ----
-  // Three motion layers now: a slow continuous auto-rotation so the
-  // object always reads as "alive"; a 3D tilt following the cursor for
-  // depth; and true parallax — the object's own position shifts against
-  // the page as the cursor moves, the part a tilt-only effect was
-  // missing. gsap.quickTo gives a cheap, jitter-free way to chase a
-  // moving target for all of these.
+  // ---- hero centerpiece: real multi-layer parallax ----
+  // A single rigid object translating as one block reads as weak —
+  // genuine parallax depth comes from several independent planes moving
+  // at different rates. Each .disc-layer carries its own data-depth
+  // (0 = far/barely moves, 1+ = near/moves the most); the discs inside
+  // keep their own plain CSS spin animation, kept off the layer that
+  // GSAP is driving so the two transforms never collide.
   var heroObject = document.getElementById("heroObject");
-  var heroObjectInner = document.getElementById("heroObjectInner");
-  if (heroObject && heroObjectInner) {
-    gsap.set(heroObjectInner, { rotateX: 52, rotateZ: 0 });
+  var discLayers = heroObject ? Array.prototype.slice.call(heroObject.querySelectorAll(".disc-layer")) : [];
+  if (heroObject && discLayers.length) {
+    var PARALLAX_RANGE_PX = 60;
 
-    gsap.to(heroObjectInner, {
-      rotateZ: 360,
-      duration: 22,
-      ease: "none",
-      repeat: -1,
+    var movers = discLayers.map(function (layer) {
+      var depth = parseFloat(layer.getAttribute("data-depth")) || 0.5;
+      return {
+        depth: depth,
+        x: gsap.quickTo(layer, "x", { duration: 0.7, ease: "power2.out" }),
+        y: gsap.quickTo(layer, "y", { duration: 0.7, ease: "power2.out" }),
+      };
     });
 
-    var tiltX = gsap.quickTo(heroObjectInner, "rotateX", { duration: 0.6, ease: "power2.out" });
-    var tiltY = gsap.quickTo(heroObjectInner, "rotateY", { duration: 0.6, ease: "power2.out" });
-    var parallaxX = gsap.quickTo(heroObject, "x", { duration: 0.9, ease: "power2.out" });
-    var parallaxY = gsap.quickTo(heroObject, "y", { duration: 0.9, ease: "power2.out" });
-
-    var PARALLAX_RANGE_PX = 26;
-
     window.addEventListener("pointermove", function (e) {
-      var rect = heroObject.getBoundingClientRect();
-      var cx = rect.left + rect.width / 2;
-      var cy = rect.top + rect.height / 2;
-      // distance from the object's own center, normalized and clamped —
-      // deliberately uses the whole viewport as the tracking range (not
-      // just hovering the object itself) so the effect reads as "the
-      // object is aware of the cursor," not a narrow hover trigger
-      var dx = gsap.utils.clamp(-1, 1, (e.clientX - cx) / (window.innerWidth / 2));
-      var dy = gsap.utils.clamp(-1, 1, (e.clientY - cy) / (window.innerHeight / 2));
-      tiltX(52 - dy * 10);
-      tiltY(dx * 14);
-      parallaxX(dx * PARALLAX_RANGE_PX);
-      parallaxY(dy * PARALLAX_RANGE_PX);
+      // tracked against the whole viewport, not just hovering the
+      // object, so it reads as "the scene is aware of the cursor"
+      var dx = gsap.utils.clamp(-1, 1, (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2));
+      var dy = gsap.utils.clamp(-1, 1, (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2));
+      movers.forEach(function (m) {
+        m.x(dx * PARALLAX_RANGE_PX * m.depth);
+        m.y(dy * PARALLAX_RANGE_PX * m.depth);
+      });
     });
   }
 
