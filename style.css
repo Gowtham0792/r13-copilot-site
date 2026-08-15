@@ -96,28 +96,19 @@ body {
   overflow: hidden;
 }
 
-/* slow-sweeping gradient ring around the capsule edge */
-.docked-header-inner::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: conic-gradient(from 0deg, transparent 0%, var(--accent) 12%, transparent 28%, var(--coral) 55%, transparent 70%);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0.7;
-  animation: header-ring-spin 7s linear infinite;
-  pointer-events: none;
+/* ---------- reusable sheen ----------
+   A faint diagonal light sweep across a card's glass. Apply the .sheen
+   class to any element that already has position:relative + overflow:
+   hidden (or add both alongside it). Each instance gets a slightly
+   different delay/duration below so a row of sheened cards doesn't
+   sweep in perfect unison. */
+
+.sheen {
+  position: relative;
+  overflow: hidden;
 }
 
-@keyframes header-ring-spin {
-  to { transform: rotate(360deg); }
-}
-
-/* faint light sheen sweeping across the glass */
-.docked-header-inner::after {
+.sheen::after {
   content: "";
   position: absolute;
   top: 0;
@@ -126,11 +117,12 @@ body {
   height: 100%;
   background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.09), transparent);
   transform: skewX(-18deg);
-  animation: header-sheen 6.5s ease-in-out infinite;
+  animation: sheen-sweep 6.5s ease-in-out infinite;
+  animation-delay: var(--sheen-delay, 0s);
   pointer-events: none;
 }
 
-@keyframes header-sheen {
+@keyframes sheen-sweep {
   0% { left: -60%; }
   38%, 100% { left: 140%; }
 }
@@ -487,8 +479,7 @@ footer .wrap {
 
 @media (prefers-reduced-motion: reduce) {
   .badge .dot::after { animation: none; opacity: 0; }
-  .docked-header-inner::before { animation: none; }
-  .docked-header-inner::after { animation: none; opacity: 0; }
+  .sheen::after { animation: none; opacity: 0; }
   .hero-glow span { animation: none; }
   .bento-card { opacity: 1; transform: none; }
 }
