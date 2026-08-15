@@ -105,6 +105,41 @@
       0.2
     );
 
+  // ---- hero centerpiece: ambient spin + mouse-parallax tilt ----
+  // Two motion layers, common for this kind of abstract 3D hero object:
+  // a slow continuous auto-rotation so it always reads as "alive," plus
+  // a subtle tilt that follows the cursor for a sense of real depth.
+  // gsap.quickTo gives a cheap, jitter-free way to chase a moving target.
+  var heroObject = document.getElementById("heroObject");
+  var heroObjectInner = document.getElementById("heroObjectInner");
+  if (heroObject && heroObjectInner) {
+    gsap.set(heroObjectInner, { rotateX: 52, rotateZ: 0 });
+
+    gsap.to(heroObjectInner, {
+      rotateZ: 360,
+      duration: 22,
+      ease: "none",
+      repeat: -1,
+    });
+
+    var tiltX = gsap.quickTo(heroObjectInner, "rotateX", { duration: 0.6, ease: "power2.out" });
+    var tiltY = gsap.quickTo(heroObjectInner, "rotateY", { duration: 0.6, ease: "power2.out" });
+
+    window.addEventListener("pointermove", function (e) {
+      var rect = heroObject.getBoundingClientRect();
+      var cx = rect.left + rect.width / 2;
+      var cy = rect.top + rect.height / 2;
+      // distance from the object's own center, normalized and clamped —
+      // deliberately uses the whole viewport as the tilt range (not just
+      // hovering the object itself) so the effect reads as "the object
+      // is aware of the cursor," not a narrow hover trigger
+      var dx = gsap.utils.clamp(-1, 1, (e.clientX - cx) / (window.innerWidth / 2));
+      var dy = gsap.utils.clamp(-1, 1, (e.clientY - cy) / (window.innerHeight / 2));
+      tiltX(52 - dy * 10);
+      tiltY(dx * 14);
+    });
+  }
+
   // ---- pull-quote: pin while each word lights up in reading order ----
   gsap.timeline({
     scrollTrigger: {
