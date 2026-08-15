@@ -208,17 +208,20 @@ h1 {
   white-space: nowrap;
 }
 
-.brand-shimmer {
-  background: linear-gradient(100deg, var(--accent) 0%, var(--coral) 30%, var(--accent) 60%, var(--coral) 90%);
-  background-size: 300% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: brand-shimmer-move 7s linear infinite;
+h1 .word.accent { color: var(--accent); }
+
+/* Each character is two nested spans: an outer one the scroll-triggered
+   entrance animates (opacity/position/rotation), and an inner one that
+   carries its own continuous idle float — kept on separate elements so
+   the two animations never fight over the same transform. */
+h1 .letter-outer {
+  display: inline-block;
+  will-change: transform, opacity;
 }
 
-@keyframes brand-shimmer-move {
-  to { background-position: -300% center; }
+h1 .letter-inner {
+  display: inline-block;
+  will-change: transform;
 }
 
 .hero-tagline {
@@ -428,5 +431,4 @@ footer .wrap {
   .badge .dot { animation: none; }
   .hero-glow span { animation: none; }
   .bento-card { opacity: 1; transform: none; }
-  .brand-shimmer { animation: none; background-position: 0 center; }
 }

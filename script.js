@@ -26,6 +26,43 @@
 
   gsap.registerPlugin(ScrollTrigger);
 
+  // ---- split the hero title into individually-animatable letters ----
+  // Two nested spans per letter: an outer one the scroll entrance drives,
+  // an inner one that gets its own always-running idle float — kept apart
+  // so the two animations never write to the same transform at once.
+  var heroTitle = document.getElementById("heroTitle");
+  var words = [
+    { text: "R13", accent: true },
+    { text: "Copilot", accent: false },
+  ];
+  var markup = "";
+  words.forEach(function (w, wi) {
+    markup += '<span class="word' + (w.accent ? " accent" : "") + '">';
+    w.text.split("").forEach(function (ch) {
+      markup +=
+        '<span class="letter-outer"><span class="letter-inner">' + ch + "</span></span>";
+    });
+    markup += "</span>";
+    if (wi < words.length - 1) markup += " ";
+  });
+  heroTitle.innerHTML = markup;
+
+  var letterOuters = heroTitle.querySelectorAll(".letter-outer");
+  var letterInners = heroTitle.querySelectorAll(".letter-inner");
+
+  gsap.set(letterOuters, { opacity: 0, y: 34, rotateZ: 7 });
+
+  // continuous idle float, always running, offset per letter — reads as
+  // the wordmark gently breathing rather than a static logo
+  gsap.to(letterInners, {
+    y: -9,
+    duration: 1.7,
+    ease: "sine.inOut",
+    repeat: -1,
+    yoyo: true,
+    stagger: { each: 0.07, from: "start" },
+  });
+
   // ---- hero: pin while the title settles in, then folds into the header ----
   gsap.set("#heroSub", { opacity: 0, y: 18 });
   gsap.set("#heroTagline", { opacity: 0, y: 14 });
@@ -42,9 +79,9 @@
     },
   });
   heroTl
-    // settle in
+    // settle in — letters fly/rotate into place one after another
     .to("#heroEyebrow", { opacity: 1, y: 0, ease: "none", duration: 0.12 }, 0)
-    .fromTo("#heroTitle", { scale: 1.1, y: 20 }, { scale: 1, y: 0, ease: "none", duration: 0.3 }, 0)
+    .to(letterOuters, { opacity: 1, y: 0, rotateZ: 0, stagger: 0.018, ease: "none", duration: 0.3 }, 0)
     .to("#heroTagline", { opacity: 1, y: 0, ease: "none", duration: 0.2 }, 0.2)
     .to("#heroSub", { opacity: 1, y: 0, ease: "none", duration: 0.2 }, 0.32)
     .to(".hero-glow .b1", { scale: 1.15, opacity: 0.35, ease: "none", duration: 1 }, 0)
