@@ -186,7 +186,6 @@ body {
      finishing and the next section being able to appear. */
   padding: clamp(2.75rem, 6vw, 4.5rem) 0 clamp(2.25rem, 4vw, 3rem);
   overflow: hidden;
-  text-align: center;
 }
 
 .hero-glow {
@@ -236,6 +235,21 @@ body {
 .hero-inner {
   position: relative;
   z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(2rem, 5vw, 4rem);
+}
+
+.hero-copy {
+  text-align: left;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+@media (max-width: 860px) {
+  .hero-inner { flex-direction: column; text-align: center; }
+  .hero-copy { text-align: center; }
 }
 
 .eyebrow {
@@ -254,8 +268,8 @@ body {
 }
 
 h1 {
-  margin: 0 auto;
-  font-size: clamp(2.75rem, 9vw, 6.25rem);
+  margin: 0;
+  font-size: clamp(2.5rem, 6vw, 4.75rem);
   font-weight: 800;
   letter-spacing: -0.035em;
   line-height: 1;
@@ -279,7 +293,7 @@ h1 .letter-inner {
 }
 
 .hero-tagline {
-  margin: 1.5rem auto 0;
+  margin: 1.5rem 0 0;
   max-width: 30ch;
   font-size: clamp(1.15rem, 2.4vw, 1.6rem);
   font-weight: 550;
@@ -288,10 +302,14 @@ h1 .letter-inner {
 }
 
 .hero-sub {
-  margin: 1.25rem auto 0;
-  max-width: 36rem;
+  margin: 1.25rem 0 0;
+  max-width: 30rem;
   font-size: clamp(1rem, 1.6vw, 1.15rem);
   color: var(--text-dim);
+}
+
+@media (max-width: 860px) {
+  .hero-tagline, .hero-sub { margin-left: auto; margin-right: auto; }
 }
 
 /* ---------- hero centerpiece: abstract 3D object ----------
@@ -301,10 +319,14 @@ h1 .letter-inner {
    mouse-parallax tilt on top of this resting pose. */
 
 .hero-object {
-  width: clamp(11rem, 22vw, 16rem);
-  height: clamp(11rem, 22vw, 16rem);
-  margin: clamp(2rem, 5vw, 3.5rem) auto 0;
+  flex: none;
+  width: clamp(10rem, 20vw, 17rem);
+  height: clamp(10rem, 20vw, 17rem);
   perspective: 1000px;
+}
+
+@media (max-width: 860px) {
+  .hero-object { margin: clamp(1.5rem, 5vw, 3rem) auto 0; }
 }
 
 .hero-object-inner {
