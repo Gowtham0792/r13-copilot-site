@@ -5,145 +5,135 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>R13 Copilot</title>
 <meta name="description" content="R13 Copilot — a desktop tool for ECE R13 / AIS 113 trailer brake certification testing." />
-<link rel="stylesheet" href="style.css?v=4" />
+<link rel="stylesheet" href="style.css?v=5" />
 </head>
 <body>
 
 <header class="topbar">
-  <div class="wordmark"><span class="signal">R13</span> <span class="dim">COPILOT</span></div>
-  <div class="status-pill"><span class="dot"></span>In development</div>
+  <div class="wordmark"><span class="accent">R13</span> <span class="dim">Copilot</span></div>
+  <div class="badge"><span class="dot"></span>In development</div>
 </header>
 
 <section class="hero">
+  <div class="hero-glow" aria-hidden="true"><span class="b1"></span><span class="b2"></span></div>
   <div class="wrap hero-inner">
-    <div class="hero-grid">
-      <div>
-        <div class="eyebrow">
-          <span>ECE R13 · ANNEX 13</span>
-          <span>AIS 113</span>
-          <span>O3 / O4 TRAILERS</span>
-        </div>
+    <span class="eyebrow">ECE R13 · AIS 113 · O3/O4 trailers</span>
 
-        <h1>Brake certification that reads the <span class="signal">regulation</span>, not summaries of it.</h1>
+    <h1><span class="thin">Brake certification,</span> <span class="bold">read</span> <span class="accent">straight from the regulation.</span></h1>
 
-        <p class="hero-sub">
-          A desktop tool for planning, measuring, and calculating ECE&nbsp;R13
-          Annex&nbsp;13 / AIS&nbsp;113 trailer brake performance — every
-          formula cross-checked directly against the source regulation text,
-          not transcribed from a spec sheet.
-        </p>
-      </div>
-
-      <div class="panel-frame">
-        <div class="panel-glow" aria-hidden="true"></div>
-        <div class="readout">
-          <div class="readout-head">
-            <span>ABS control cycle — V / P</span>
-            <span class="sample"><span class="dot"></span>Sample run</span>
-          </div>
-          <canvas id="waveform" width="1200" height="230"></canvas>
-          <div class="readout-stats">
-            <div class="stat">
-              <div class="label">k-factor</div>
-              <div class="value" data-count="0.947">0.000</div>
-            </div>
-            <div class="stat">
-              <div class="label">z<sub>RAL</sub></div>
-              <div class="value" data-count="1.112">0.000</div>
-            </div>
-            <div class="stat">
-              <div class="label">ε ≥ 0.75</div>
-              <div class="value pass" data-count="1.17" data-suffix=" · PASS">0.00</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <p class="hero-sub">
+      A desktop tool for planning, measuring, and calculating ECE&nbsp;R13
+      Annex&nbsp;13 / AIS&nbsp;113 trailer brake performance — every formula
+      cross-checked against the source regulation text, not summarized from
+      a spec sheet.
+    </p>
   </div>
 </section>
 
 <section class="block">
   <div class="wrap">
     <div class="section-head">
-      <div>
-        <div class="section-mark">§01</div>
-        <h2>What it does</h2>
-      </div>
-      <p>From a vehicle library to a calculated verdict — one guided workflow, not a spreadsheet.</p>
+      <div class="kicker">What it does</div>
+      <h2>One guided workflow, not a spreadsheet.</h2>
+      <p>From a vehicle library to a calculated verdict, every step is built for the actual certification process.</p>
     </div>
 
-    <div class="spec-grid" id="specGrid">
-      <div class="spec-card">
-        <svg class="icon" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M4 20h4l2-6h9l3 6h4" />
-          <circle cx="10" cy="22" r="2.6" />
-          <circle cx="21" cy="22" r="2.6" />
-        </svg>
+    <div class="bento" id="bento">
+      <div class="bento-card wide">
+        <div class="icon-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 16a8 8 0 1 1 16 0" />
+            <path d="M12 16l5-6" />
+            <circle cx="12" cy="16" r="1.3" fill="currentColor" stroke="none" />
+          </svg>
+        </div>
+        <div>
+          <h3>Adhesion utilization engine</h3>
+          <p>k-factor determination, z<sub>RAL</sub> derivation, and the high-μ / low-μ / split-μ verdicts — computed directly from the regulation's own Annex 13 formulas.</p>
+        </div>
+      </div>
+
+      <div class="bento-card">
+        <div class="icon-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 17h4l2-6h7l3 6h2" />
+            <circle cx="8" cy="19" r="2" />
+            <circle cx="17" cy="19" r="2" />
+          </svg>
+        </div>
         <h3>Vehicle library</h3>
-        <p>Trucks and trailers — semi, drawbar, centre-axle, dolly — with full axle configuration, brake hardware, and a chronological edit history.</p>
-        <span class="mark">01</span>
+        <p>Trucks and trailers — semi, drawbar, centre-axle, dolly — with full axle configuration and a chronological edit history.</p>
       </div>
-      <div class="spec-card">
-        <svg class="icon" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M6 8h18M6 15h18M6 22h11" />
-          <path d="M24 19l2 2 3.5-3.5" />
-        </svg>
+
+      <div class="bento-card">
+        <div class="icon-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 6h16M4 12h16M4 18h9" />
+            <path d="M17 15l2 2 4-4" />
+          </svg>
+        </div>
         <h3>Guided test wizard</h3>
-        <p>Select which regulation tests to run, configure the vehicle combination and ABS/EBS system, then map every sensor and modulator assignment.</p>
-        <span class="mark">02</span>
+        <p>Select which regulation tests to run, configure the vehicle combination, and map every sensor and modulator assignment.</p>
       </div>
-      <div class="spec-card">
-        <svg class="icon" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M6 21a9 9 0 1 1 18 0" />
-          <path d="M15 21l6-8" />
-          <circle cx="15" cy="21" r="1.6" fill="currentColor" stroke="none" />
-        </svg>
-        <h3>Adhesion utilization engine</h3>
-        <p>k-factor determination, z<sub>RAL</sub> derivation, and the high-μ / low-μ / split-μ verdicts — computed from the regulation's own formulas.</p>
-        <span class="mark">03</span>
-      </div>
-      <div class="spec-card">
-        <svg class="icon" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M22.5 15a7.5 7.5 0 1 1-2.2-5.3" />
-          <path d="M22.5 6v5h-5" />
-        </svg>
+
+      <div class="bento-card">
+        <div class="icon-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 12a8 8 0 1 1-2.34-5.66" />
+            <path d="M20 4v5h-5" />
+          </svg>
+        </div>
         <h3>Session continuity</h3>
-        <p>Every run autosaves and survives a crash or restart, and can be resumed, duplicated, or compared side-by-side against other sessions.</p>
-        <span class="mark">04</span>
+        <p>Every run autosaves and survives a crash or restart, and can be resumed, duplicated, or compared side-by-side.</p>
+      </div>
+
+      <div class="bento-card">
+        <div class="icon-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4v6h6M20 20v-6h-6" />
+            <path d="M4.6 15a8 8 0 0 0 13.8 3M19.4 9A8 8 0 0 0 5.6 6" />
+          </svg>
+        </div>
+        <h3>Measurement files</h3>
+        <p>Attach real CANape .mdf/.mf4 files, organize them into a structured archive, and upload to SharePoint or a network share.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section class="block alt">
+<section class="pullquote">
+  <div class="wrap">
+    <blockquote>&ldquo;Not a formula transcribed from a summary &mdash; <span class="accent">the regulation text itself</span>, cross-checked line by line.&rdquo;</blockquote>
+  </div>
+</section>
+
+<section class="block">
   <div class="wrap">
     <div class="section-head">
-      <div>
-        <div class="section-mark">§02</div>
-        <h2>Built on</h2>
-      </div>
-      <p>Native desktop shell, real persistence, no cloud dependency for the core workflow.</p>
+      <div class="kicker">Built on</div>
+      <h2>A native desktop shell, real persistence.</h2>
+      <p>No cloud dependency for the core certification workflow.</p>
     </div>
 
     <div class="stack-grid">
-      <div class="stack-col">
+      <div class="stack-panel">
         <h3>Frontend</h3>
-        <ul class="stack-list mono">
-          <li><span class="name">React / React DOM</span><span class="ver">19.2</span></li>
-          <li><span class="name">TypeScript</span><span class="ver">6.0</span></li>
-          <li><span class="name">Vite</span><span class="ver">8.1</span></li>
-          <li><span class="name">Tailwind CSS</span><span class="ver">4.3</span></li>
-          <li><span class="name">Zustand</span><span class="ver">5.0</span></li>
+        <ul class="stack-list">
+          <li><span class="name">React / React DOM</span><span class="ver mono">19.2</span></li>
+          <li><span class="name">TypeScript</span><span class="ver mono">6.0</span></li>
+          <li><span class="name">Vite</span><span class="ver mono">8.1</span></li>
+          <li><span class="name">Tailwind CSS</span><span class="ver mono">4.3</span></li>
+          <li><span class="name">Zustand</span><span class="ver mono">5.0</span></li>
         </ul>
       </div>
-      <div class="stack-col">
+      <div class="stack-panel">
         <h3>Native shell</h3>
-        <ul class="stack-list mono">
-          <li><span class="name">Tauri</span><span class="ver">2.11</span></li>
-          <li><span class="name">SQLite (tauri-plugin-sql)</span><span class="ver">2.x</span></li>
-          <li><span class="name">Microsoft Graph API</span><span class="ver">—</span></li>
-          <li><span class="name">mdf4-rs / mdflib</span><span class="ver">0.6</span></li>
-          <li><span class="name">Rust</span><span class="ver">edition 2021</span></li>
+        <ul class="stack-list">
+          <li><span class="name">Tauri</span><span class="ver mono">2.11</span></li>
+          <li><span class="name">SQLite (tauri-plugin-sql)</span><span class="ver mono">2.x</span></li>
+          <li><span class="name">Microsoft Graph API</span><span class="ver mono">—</span></li>
+          <li><span class="name">mdf4-rs / mdflib</span><span class="ver mono">0.6</span></li>
+          <li><span class="name">Rust</span><span class="ver mono">edition 2021</span></li>
         </ul>
       </div>
     </div>
@@ -159,6 +149,6 @@
 
 <script src="vendor/gsap/gsap.min.js"></script>
 <script src="vendor/gsap/ScrollTrigger.min.js"></script>
-<script src="script.js?v=4"></script>
+<script src="script.js?v=5"></script>
 </body>
 </html>
