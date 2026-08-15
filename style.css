@@ -112,6 +112,56 @@ body {
   position: relative;
 }
 
+/* Sticky + negative-margin trick: this stays pinned as a full-viewport
+   backdrop for the *entire* scroll duration of .reveal (not just its
+   first screenful) without needing position:fixed or any JS to know
+   when to detach — it releases naturally once .reveal's own bottom is
+   reached, same mechanism the heading/glass panel below use. */
+.reveal-backdrop {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  margin-bottom: -100vh;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.reveal-backdrop span {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+}
+
+.reveal-backdrop .b1 {
+  width: 38rem;
+  height: 38rem;
+  top: -8rem;
+  left: 12%;
+  background: radial-gradient(circle, var(--accent), transparent 70%);
+  opacity: 0.3;
+  animation: backdrop-drift-a 18s ease-in-out infinite;
+}
+
+.reveal-backdrop .b2 {
+  width: 30rem;
+  height: 30rem;
+  bottom: -6rem;
+  right: 8%;
+  background: radial-gradient(circle, var(--coral), transparent 70%);
+  opacity: 0.22;
+  animation: backdrop-drift-b 22s ease-in-out infinite;
+}
+
+@keyframes backdrop-drift-a {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(4%, 6%) scale(1.12); }
+}
+@keyframes backdrop-drift-b {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-5%, -4%) scale(1.08); }
+}
+
 .reveal-inner {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -159,7 +209,47 @@ h1 {
   color: var(--text-dim);
 }
 
+.reveal-list-wrap {
+  position: relative;
+}
+
+/* The "glass" selection lens — a sticky panel pinned at the exact same
+   vertical center the text gradient below brightens at, so the active
+   line reads as sitting inside a lit reading-pane rather than just
+   changing color on a flat black field. height:0 + the visual panel
+   drawn on ::before keeps it from adding any layout height of its own;
+   position:sticky (not fixed) means it automatically stops following
+   the viewport once .reveal-list-wrap's own bottom scrolls past, so it
+   never lingers into the sections below. */
+.reveal-glass {
+  position: sticky;
+  top: 50vh;
+  height: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.reveal-glass::before {
+  content: "";
+  position: absolute;
+  left: -1.75rem;
+  right: -1.75rem;
+  top: -2.6rem;
+  height: 5.2rem;
+  border-radius: 1.5rem;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  box-shadow:
+    0 26px 60px -22px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    0 0 46px -8px var(--accent-soft);
+}
+
 .reveal-list {
+  position: relative;
+  z-index: 1;
   list-style: none;
   margin: 0;
   padding: 30vh 0;
@@ -191,6 +281,7 @@ h1 {
   .reveal-sub { margin-left: auto; margin-right: auto; }
   .reveal-list { padding: 10vh 0; }
   .reveal-list li { min-height: 30vh; justify-content: center; text-align: center; }
+  .reveal-glass::before { left: -1rem; right: -1rem; }
 }
 
 /* ---------- sections ---------- */
@@ -382,5 +473,6 @@ footer .wrap {
 
 @media (prefers-reduced-motion: reduce) {
   .sheen::after { animation: none; opacity: 0; }
+  .reveal-backdrop span { animation: none; }
   .bento-card { opacity: 1; transform: none; }
 }
