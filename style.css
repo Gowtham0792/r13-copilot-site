@@ -544,7 +544,12 @@ html, body {
    with the title further down. */
 .plx-08__card-head {
   display: flex;
-  align-items: center;
+  /* flex-start, not center — centering against the title's full
+     height only looks right for a single-line title; a two-line title
+     (e.g. card 01) then visibly sinks the icon below the first line.
+     flex-start keeps the icon aligned with the top of the title no
+     matter how many lines it wraps to. */
+  align-items: flex-start;
   gap: 14px;
   margin-bottom: 10px;
 }
