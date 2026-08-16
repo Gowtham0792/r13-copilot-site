@@ -399,25 +399,16 @@ html, body {
   margin-bottom: 80px;
 }
 
+/* Now the section's only heading — carries the same big display
+   styling the removed "Hover over a card — any card." <h1> used, per
+   explicit user request, instead of the small uppercase label look. */
 .plx-08__label {
-  display: inline-block;
-  font-size: 10px;
-  font-family: 'Geist Mono', monospace;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 16px;
-}
-
-.plx-08__header h1 {
+  font-family: 'Geist', system-ui, sans-serif;
   font-size: clamp(32px, 5vw, 60px);
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.0;
-}
-
-.plx-08__header h1 span {
-  opacity: 0.3;
+  color: var(--text);
 }
 
 /* Grid */
