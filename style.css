@@ -280,7 +280,7 @@ html, body {
 .plx-09__zoom-h {
   font-family: 'Big Shoulders Display', sans-serif;
   font-weight: 900;
-  font-size: clamp(56px, 13vw, 170px);
+  font-size: clamp(70px, 16.25vw, 212px);
   letter-spacing: -0.04em;
   line-height: 0.88;
 }
