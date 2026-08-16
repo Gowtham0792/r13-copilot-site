@@ -54,12 +54,12 @@
       if (rings) rings.style.transform = `translate(-50%,-50%) scale(${1 + p * 2.5})`;
 
       // content: fade in after 35% scroll, slide up
-      const cp = Math.max(0, (p - 0.35) / 0.45);
+      const cp = Math.max(0, (p - 0.14) / 0.34);
       if (content) {
         content.style.opacity = String(Math.min(1, cp * 1.5));
         content.style.transform = `translateY(${(1 - Math.min(1, cp)) * 50}px)`;
       }
-      if (sub) sub.style.opacity = String(Math.min(1, Math.max(0, (p - 0.55) / 0.3)));
+      if (sub) sub.style.opacity = String(Math.min(1, Math.max(0, (p - 0.3) / 0.25)));
 
       // ── GALLERY: parallax inside each cell ──
       galCells.forEach((cell) => {
