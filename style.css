@@ -1,0 +1,383 @@
+/* R13 Copilot showcase site.
+   Theme adopted from a CodeFronts "CSS Zoom-In / Depth Parallax" demo
+   (MIT licensed — https://codefronts.com/motion/css-parallax-designs/
+   css-zoom-in-depth-parallax-on-scroll/), used with permission per the
+   source's own license. Structure/effect kept close to the original
+   (already namespaced under its own .plx-09 prefix); fonts vendored
+   locally instead of a live Google Fonts request. Shell only — content
+   is a separate, later pass (see index.html's own placeholder notes). */
+
+@font-face {
+  font-family: "Big Shoulders Display";
+  src: url("vendor/fonts/big-shoulders-display-700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Big Shoulders Display";
+  src: url("vendor/fonts/big-shoulders-display-900.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Libre Baskerville";
+  src: url("vendor/fonts/libre-baskerville-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Libre Baskerville";
+  src: url("vendor/fonts/libre-baskerville-400-italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Fixes a page-edge border: the .plx-09 rules below reset every element
+   *inside* it, but never touch html/body themselves — with the default
+   browser body margin left in place, the page canvas was smaller than
+   the viewport and the default white background showed through as a
+   border on every side. */
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #080608;
+}
+
+.plx-09,
+.plx-09 *,
+.plx-09 *::before,
+.plx-09 *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.plx-09 {
+  --gold: #d4a843;
+  --ink: #080608;
+  --off: #f2eee8;
+  min-height: 100vh;
+  background: var(--ink);
+  color: var(--off);
+  font-family: 'Libre Baskerville', serif;
+  /* overflow-x:hidden was breaking position:sticky on descendants.
+       Setting any overflow axis to non-visible creates a new scroll
+       context, making this element the sticky-containment ancestor
+       instead of body — so the .plx-09__zoom-sticky inner never
+       pinned, and the visitor saw the zoom scene bg + rings scroll
+       past as a single block (looked like dead empty scroll between
+       sections). overflow:clip is the modern equivalent that
+       prevents horizontal overflow WITHOUT establishing a scroll
+       context — sticky works correctly underneath. Chrome 90+,
+       Safari 16+, Firefox 81+ (all evergreen majors). */
+  overflow-x: clip;
+}
+
+/* ═══ SCENE 1: Zoom-through ═══ */
+
+.plx-09__zoom {
+  position: relative;
+  height: 400vh;
+}
+
+.plx-09__zoom-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* BG: scales UP (world expanding toward viewer) */
+.plx-09__zoom-bg {
+  position: absolute;
+  inset: -20%;
+  will-change: transform;
+  transform-origin: center center;
+  background: radial-gradient(ellipse at 50% 50%, rgba(212,168,67,0.2) 0%, transparent 40%), conic-gradient(from 0deg at 50% 50%,
+        #0a0808 0deg, #110a10 60deg, #0a0a12 120deg,
+        #0c0808 180deg, #100c08 240deg, #080a0c 300deg, #0a0808 360deg);
+}
+
+/* Grid: scales UP faster (closer layer) */
+.plx-09__zoom-grid {
+  position: absolute;
+  inset: -50%;
+  will-change: transform;
+  transform-origin: center center;
+  background-image: linear-gradient(rgba(212,168,67,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(212,168,67,0.06) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+/* Rings: scale UP most (fly through them) */
+.plx-09__rings {
+  position: absolute;
+  width: 100vmin;
+  height: 100vmin;
+  will-change: transform;
+  transform-origin: center center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.plx-09__ring {
+  position: absolute;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid;
+}
+
+.plx-09__ring:nth-child(1) {
+  width: 92%;
+  height: 92%;
+  border-color: rgba(212,168,67,0.10);
+}
+
+.plx-09__ring:nth-child(2) {
+  width: 74%;
+  height: 74%;
+  border-color: rgba(212,168,67,0.14);
+}
+
+.plx-09__ring:nth-child(3) {
+  width: 56%;
+  height: 56%;
+  border-color: rgba(212,168,67,0.20);
+}
+
+.plx-09__ring:nth-child(4) {
+  width: 38%;
+  height: 38%;
+  border-color: rgba(212,168,67,0.30);
+}
+
+.plx-09__ring:nth-child(5) {
+  width: 22%;
+  height: 22%;
+  border-color: rgba(212,168,67,0.45);
+}
+
+.plx-09__ring:nth-child(6) {
+  width: 8%;
+  height: 8%;
+  border-color: rgba(212,168,67,0.7);
+  background: rgba(212,168,67,0.1);
+}
+
+/* Gold dot center */
+.plx-09__dot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--gold);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 20px rgba(212,168,67,0.9), 0 0 60px rgba(212,168,67,0.4);
+  z-index: 4;
+}
+
+/* Content: fades and slides in from bottom as zoom progresses */
+.plx-09__zoom-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 0 40px;
+  opacity: 0;
+  transform: translateY(50px);
+  will-change: opacity, transform;
+  pointer-events: none;
+}
+
+.plx-09__zoom-eyebrow {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 16px;
+}
+
+.plx-09__zoom-h {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900;
+  font-size: clamp(56px, 13vw, 170px);
+  letter-spacing: -0.04em;
+  line-height: 0.88;
+}
+
+.plx-09__zoom-sub {
+  margin-top: 24px;
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.7;
+  opacity: 0;
+  color: rgba(242,238,232,0.55);
+  max-width: 420px;
+  display: block;
+  will-change: opacity;
+}
+
+/* ═══ SCENE 2: Gallery — zoom inside bounded cells ═══ */
+
+.plx-09__gallery {
+  padding: 100px 40px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.plx-09__cell {
+  position: relative;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  cursor: default;
+}
+
+/* Each cell inner: starts zoomed in (scale 1.3), scrolls to 1.0 as it enters viewport */
+.plx-09__cell-inner {
+  position: absolute;
+  inset: -15%;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.plx-09__cell:nth-child(1) .plx-09__cell-inner {
+  background: radial-gradient(circle at 40% 40%, #4a2870 0%, #140820 70%);
+}
+
+.plx-09__cell:nth-child(2) .plx-09__cell-inner {
+  background: radial-gradient(circle at 55% 45%, #154060 0%, #04101c 70%);
+}
+
+.plx-09__cell:nth-child(3) .plx-09__cell-inner {
+  background: radial-gradient(circle at 50% 55%, #5a1a08 0%, #180604 70%);
+}
+
+.plx-09__cell-inner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 40%, rgba(255,255,255,0.1) 0%, transparent 55%);
+}
+
+.plx-09__cell-label {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  z-index: 3;
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.8);
+}
+
+.plx-09__cell-label small {
+  display: block;
+  font-family: 'Libre Baskerville', serif;
+  font-size: 11px;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0.05em;
+  opacity: 0.5;
+  margin-top: 4px;
+}
+
+/* ═══ SCENE 3: Outro zoom ═══ */
+
+.plx-09__outro {
+  position: relative;
+  height: 300vh;
+}
+
+.plx-09__outro-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.plx-09__outro-bg {
+  position: absolute;
+  inset: -20%;
+  will-change: transform;
+  transform-origin: center center;
+  background: radial-gradient(ellipse at 50% 50%, #1a0c26 0%, #080608 65%);
+}
+
+.plx-09__outro-text {
+  position: relative;
+  z-index: 5;
+  text-align: center;
+  will-change: transform;
+}
+
+.plx-09__outro-text h2 {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900;
+  font-size: clamp(44px, 10vw, 130px);
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+}
+
+.plx-09__outro-text h2 em {
+  font-style: italic;
+  font-family: 'Libre Baskerville', serif;
+  font-weight: 400;
+  color: var(--gold);
+  font-size: 0.65em;
+}
+
+.plx-09__outro-text p {
+  margin-top: 30px;
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.8;
+  color: rgba(242,238,232,0.4);
+  max-width: 380px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 768px) {
+  .plx-09__gallery {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plx-09__zoom-bg,
+    .plx-09__zoom-grid,
+    .plx-09__rings,
+    .plx-09__cell-inner,
+    .plx-09__outro-bg,
+    .plx-09__outro-text {
+    transform: none !important;
+  }
+
+  .plx-09__zoom-content {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .plx-09__zoom-sub {
+    opacity: 1 !important;
+  }
+}
