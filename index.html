@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>R13 Copilot</title>
 <meta name="description" content="R13 Copilot — a desktop tool for ECE R13 / AIS 113 trailer brake certification testing." />
-<link rel="stylesheet" href="style.css?v=25" />
+<link rel="stylesheet" href="style.css?v=26" />
 </head>
 <body>
 
@@ -384,27 +384,15 @@
     </div>
 
     <div class="chart-card">
-      <p class="chart-title">Codebase size over time</p>
+      <p class="chart-title">Codebase size vs. code churn</p>
       <div class="legend">
         <span><i class="swatch primary"></i>Codebase size (LOC)</span>
-        <span><i class="swatch secondary"></i>Tokens per line of code</span>
+        <span><i class="swatch secondary"></i>Lines added</span>
+        <span><i class="swatch removed"></i>Lines removed</span>
       </div>
       <div class="tooltip" id="tooltip-loc"></div>
       <div class="chart-wrap">
         <svg class="chart" id="chart-loc" viewBox="0 0 900 340"></svg>
-      </div>
-    </div>
-
-    <div class="chart-card">
-      <p class="chart-title">Code churn vs. active Claude Code time per commit</p>
-      <div class="legend">
-        <span><i class="swatch primary"></i>Lines added</span>
-        <span><i class="swatch removed"></i>Lines removed</span>
-        <span><i class="swatch secondary"></i>Active Claude Code time (hours)</span>
-      </div>
-      <div class="tooltip" id="tooltip-churn"></div>
-      <div class="chart-wrap">
-        <svg class="chart" id="chart-churn" viewBox="0 0 900 340"></svg>
       </div>
     </div>
 
@@ -432,14 +420,13 @@
 
 </section>
 
-<script src="script.js?v=25"></script>
+<script src="script.js?v=26"></script>
 <script>
 /* Ported verbatim from the dashboard-maker artifact — chart math/
    rendering logic and datasets unchanged, see the section comment
    above for context. */
 const TOKEN_SERIES = [{"commitHash": "cdfa82b", "commitDate": "2026-07-15", "value": 534722}, {"commitHash": "a848be3", "commitDate": "2026-07-16", "value": 3914892}, {"commitHash": "30a7cd7", "commitDate": "2026-07-16", "value": 59305}, {"commitHash": "d28c8ab", "commitDate": "2026-07-17", "value": 300921}, {"commitHash": "0848be1", "commitDate": "2026-07-17", "value": 246952}, {"commitHash": "e26b722", "commitDate": "2026-07-17", "value": 12035}, {"commitHash": "f66f22a", "commitDate": "2026-07-17", "value": 91964}, {"commitHash": "9afbdd8", "commitDate": "2026-07-17", "value": 205203}, {"commitHash": "27e247f", "commitDate": "2026-07-17", "value": 631079}, {"commitHash": "7bdf328", "commitDate": "2026-07-18", "value": 1090920}, {"commitHash": "63bbc03", "commitDate": "2026-07-19", "value": 2173386}, {"commitHash": "d70e8d7", "commitDate": "2026-07-19", "value": 1727954}, {"commitHash": "cc835b2", "commitDate": "2026-07-20", "value": 1980876}, {"commitHash": "9745596", "commitDate": "2026-07-20", "value": 2083004}, {"commitHash": "9f58026", "commitDate": "2026-07-20", "value": 176296}, {"commitHash": "75d62cc", "commitDate": "2026-07-21", "value": 315235}, {"commitHash": "74d2d35", "commitDate": "2026-07-21", "value": 1417147}, {"commitHash": "dbdc470", "commitDate": "2026-07-25", "value": 6997989}, {"commitHash": "b527c66", "commitDate": "2026-07-25", "value": 1970706}, {"commitHash": "237877c", "commitDate": "2026-07-26", "value": 2299038}, {"commitHash": "8a6ac88", "commitDate": "2026-07-27", "value": 2947416}, {"commitHash": "ea73dad", "commitDate": "2026-07-28", "value": 1722677}, {"commitHash": "d55708e", "commitDate": "2026-07-28", "value": 928755}, {"commitHash": "a3f4c87", "commitDate": "2026-07-29", "value": 621871}, {"commitHash": "8616cde", "commitDate": "2026-07-30", "value": 4414994}, {"commitHash": "cd1d07c", "commitDate": "2026-07-31", "value": 5070127}, {"commitHash": "0673b5b", "commitDate": "2026-07-31", "value": 1092504}, {"commitHash": "83da65f", "commitDate": "2026-08-01", "value": 2389572}, {"commitHash": "3ce3411", "commitDate": "2026-08-03", "value": 1309761}, {"commitHash": "a689d77", "commitDate": "2026-08-05", "value": 3682500}, {"commitHash": "b0c0f9d", "commitDate": "2026-08-05", "value": 328653}, {"commitHash": "beaea1b", "commitDate": "2026-08-05", "value": 396055}, {"commitHash": "1bd2f8d", "commitDate": "2026-08-05", "value": 120779}, {"commitHash": "42d5ac7", "commitDate": "2026-08-05", "value": 52215}, {"commitHash": "810e713", "commitDate": "2026-08-05", "value": 754670}, {"commitHash": "cb90a59", "commitDate": "2026-08-06", "value": 37079}, {"commitHash": "39e7803", "commitDate": "2026-08-06", "value": 798681}, {"commitHash": "ef12a9c", "commitDate": "2026-08-06", "value": 997964}, {"commitHash": "9ae2c68", "commitDate": "2026-08-06", "value": 2521}, {"commitHash": "37354d3", "commitDate": "2026-08-06", "value": 1593}, {"commitHash": "4b3f6d1", "commitDate": "2026-08-08", "value": 3917808}, {"commitHash": "27ca563", "commitDate": "2026-08-08", "value": 783}, {"commitHash": "e2adf80", "commitDate": "2026-08-09", "value": 2159291}, {"commitHash": "4b03f6d", "commitDate": "2026-08-11", "value": 3453718}, {"commitHash": "4e04148", "commitDate": "2026-08-11", "value": 1566892}, {"commitHash": "373a639", "commitDate": "2026-08-11", "value": 403718}, {"commitHash": "02814aa", "commitDate": "2026-08-12", "value": 3845194}, {"commitHash": "f8c4cd7", "commitDate": "2026-08-13", "value": 2610586}, {"commitHash": "03ebf1a", "commitDate": "2026-08-13", "value": 5234}, {"commitHash": "0fcfbba", "commitDate": "2026-08-13", "value": 3214639}, {"commitHash": "4f88349", "commitDate": "2026-08-14", "value": 1781679}, {"commitHash": "776448c", "commitDate": "2026-08-14", "value": 2970975}, {"commitHash": "d29f22c", "commitDate": "2026-08-14", "value": 52746}, {"commitHash": "6b7a387", "commitDate": "2026-08-14", "value": 1765994}];
 const LOC_SERIES = [{"commitHash": "cdfa82b", "commitDate": "2026-07-15", "value": 690}, {"commitHash": "a848be3", "commitDate": "2026-07-16", "value": 2530}, {"commitHash": "30a7cd7", "commitDate": "2026-07-16", "value": 2530}, {"commitHash": "d28c8ab", "commitDate": "2026-07-17", "value": 2619}, {"commitHash": "0848be1", "commitDate": "2026-07-17", "value": 2619}, {"commitHash": "e26b722", "commitDate": "2026-07-17", "value": 2619}, {"commitHash": "f66f22a", "commitDate": "2026-07-17", "value": 2605}, {"commitHash": "9afbdd8", "commitDate": "2026-07-17", "value": 2719}, {"commitHash": "27e247f", "commitDate": "2026-07-17", "value": 2954}, {"commitHash": "7bdf328", "commitDate": "2026-07-18", "value": 3827}, {"commitHash": "63bbc03", "commitDate": "2026-07-19", "value": 5901}, {"commitHash": "d70e8d7", "commitDate": "2026-07-19", "value": 5901}, {"commitHash": "cc835b2", "commitDate": "2026-07-20", "value": 6640}, {"commitHash": "9745596", "commitDate": "2026-07-20", "value": 7135}, {"commitHash": "9f58026", "commitDate": "2026-07-20", "value": 7263}, {"commitHash": "75d62cc", "commitDate": "2026-07-21", "value": 7280}, {"commitHash": "74d2d35", "commitDate": "2026-07-21", "value": 7474}, {"commitHash": "dbdc470", "commitDate": "2026-07-25", "value": 9840}, {"commitHash": "b527c66", "commitDate": "2026-07-25", "value": 10959}, {"commitHash": "237877c", "commitDate": "2026-07-26", "value": 11152}, {"commitHash": "8a6ac88", "commitDate": "2026-07-27", "value": 13570}, {"commitHash": "ea73dad", "commitDate": "2026-07-28", "value": 14170}, {"commitHash": "d55708e", "commitDate": "2026-07-28", "value": 14308}, {"commitHash": "a3f4c87", "commitDate": "2026-07-29", "value": 14770}, {"commitHash": "8616cde", "commitDate": "2026-07-30", "value": 16600}, {"commitHash": "cd1d07c", "commitDate": "2026-07-31", "value": 19118}, {"commitHash": "0673b5b", "commitDate": "2026-07-31", "value": 19173}, {"commitHash": "83da65f", "commitDate": "2026-08-01", "value": 20172}, {"commitHash": "3ce3411", "commitDate": "2026-08-03", "value": 21333}, {"commitHash": "a689d77", "commitDate": "2026-08-05", "value": 21553}, {"commitHash": "b0c0f9d", "commitDate": "2026-08-05", "value": 21614}, {"commitHash": "beaea1b", "commitDate": "2026-08-05", "value": 21693}, {"commitHash": "1bd2f8d", "commitDate": "2026-08-05", "value": 21746}, {"commitHash": "42d5ac7", "commitDate": "2026-08-05", "value": 21767}, {"commitHash": "810e713", "commitDate": "2026-08-05", "value": 21767}, {"commitHash": "cb90a59", "commitDate": "2026-08-06", "value": 21767}, {"commitHash": "39e7803", "commitDate": "2026-08-06", "value": 21822}, {"commitHash": "ef12a9c", "commitDate": "2026-08-06", "value": 21867}, {"commitHash": "9ae2c68", "commitDate": "2026-08-06", "value": 21955}, {"commitHash": "37354d3", "commitDate": "2026-08-06", "value": 21980}, {"commitHash": "4b3f6d1", "commitDate": "2026-08-08", "value": 22783}, {"commitHash": "27ca563", "commitDate": "2026-08-08", "value": 25866}, {"commitHash": "e2adf80", "commitDate": "2026-08-09", "value": 26767}, {"commitHash": "4b03f6d", "commitDate": "2026-08-11", "value": 27449}, {"commitHash": "4e04148", "commitDate": "2026-08-11", "value": 27582}, {"commitHash": "373a639", "commitDate": "2026-08-11", "value": 29769}, {"commitHash": "02814aa", "commitDate": "2026-08-12", "value": 31020}, {"commitHash": "f8c4cd7", "commitDate": "2026-08-13", "value": 31048}, {"commitHash": "03ebf1a", "commitDate": "2026-08-13", "value": 32073}, {"commitHash": "0fcfbba", "commitDate": "2026-08-13", "value": 32620}, {"commitHash": "4f88349", "commitDate": "2026-08-14", "value": 33044}, {"commitHash": "776448c", "commitDate": "2026-08-14", "value": 33944}, {"commitHash": "d29f22c", "commitDate": "2026-08-14", "value": 33991}, {"commitHash": "6b7a387", "commitDate": "2026-08-14", "value": 34452}];
-const EFFICIENCY_SERIES = [{"index": 1, "commitHash": "a848be3", "commitDate": "2026-07-16", "value": 2127.6586956521737}, {"index": 2, "commitHash": "30a7cd7", "commitDate": "2026-07-16", "value": 2127.6586956521737}, {"index": 3, "commitHash": "d28c8ab", "commitDate": "2026-07-17", "value": 3381.1348314606744}, {"index": 4, "commitHash": "0848be1", "commitDate": "2026-07-17", "value": 3381.1348314606744}, {"index": 5, "commitHash": "e26b722", "commitDate": "2026-07-17", "value": 3381.1348314606744}, {"index": 6, "commitHash": "f66f22a", "commitDate": "2026-07-17", "value": 3381.1348314606744}, {"index": 7, "commitHash": "9afbdd8", "commitDate": "2026-07-17", "value": 1800.0263157894738}, {"index": 8, "commitHash": "27e247f", "commitDate": "2026-07-17", "value": 2685.4425531914894}, {"index": 9, "commitHash": "7bdf328", "commitDate": "2026-07-18", "value": 1249.6219931271478}, {"index": 10, "commitHash": "63bbc03", "commitDate": "2026-07-19", "value": 1047.9199614271938}, {"index": 11, "commitHash": "d70e8d7", "commitDate": "2026-07-19", "value": 1047.9199614271938}, {"index": 12, "commitHash": "cc835b2", "commitDate": "2026-07-20", "value": 2680.4817320703655}, {"index": 13, "commitHash": "9745596", "commitDate": "2026-07-20", "value": 4208.0888888888885}, {"index": 14, "commitHash": "9f58026", "commitDate": "2026-07-20", "value": 1377.3125}, {"index": 15, "commitHash": "75d62cc", "commitDate": "2026-07-21", "value": 18543.235294117647}, {"index": 16, "commitHash": "74d2d35", "commitDate": "2026-07-21", "value": 7304.881443298969}, {"index": 17, "commitHash": "dbdc470", "commitDate": "2026-07-25", "value": 2957.7299239222316}, {"index": 18, "commitHash": "b527c66", "commitDate": "2026-07-25", "value": 1761.1313672922251}, {"index": 19, "commitHash": "237877c", "commitDate": "2026-07-26", "value": 11912.113989637306}, {"index": 20, "commitHash": "8a6ac88", "commitDate": "2026-07-27", "value": 1218.9478908188585}, {"index": 21, "commitHash": "ea73dad", "commitDate": "2026-07-28", "value": 2871.1283333333336}, {"index": 22, "commitHash": "d55708e", "commitDate": "2026-07-28", "value": 6730.108695652174}, {"index": 23, "commitHash": "a3f4c87", "commitDate": "2026-07-29", "value": 1346.0411255411254}, {"index": 24, "commitHash": "8616cde", "commitDate": "2026-07-30", "value": 2412.565027322404}, {"index": 25, "commitHash": "cd1d07c", "commitDate": "2026-07-31", "value": 2013.5532168387608}, {"index": 26, "commitHash": "0673b5b", "commitDate": "2026-07-31", "value": 19863.70909090909}, {"index": 27, "commitHash": "83da65f", "commitDate": "2026-08-01", "value": 2391.963963963964}, {"index": 28, "commitHash": "3ce3411", "commitDate": "2026-08-03", "value": 1128.1317829457364}, {"index": 29, "commitHash": "a689d77", "commitDate": "2026-08-05", "value": 16738.636363636364}, {"index": 30, "commitHash": "b0c0f9d", "commitDate": "2026-08-05", "value": 5387.754098360656}, {"index": 31, "commitHash": "beaea1b", "commitDate": "2026-08-05", "value": 5013.354430379747}, {"index": 32, "commitHash": "1bd2f8d", "commitDate": "2026-08-05", "value": 2278.8490566037735}, {"index": 33, "commitHash": "42d5ac7", "commitDate": "2026-08-05", "value": 2486.4285714285716}, {"index": 34, "commitHash": "810e713", "commitDate": "2026-08-05", "value": 2486.4285714285716}, {"index": 35, "commitHash": "cb90a59", "commitDate": "2026-08-06", "value": 2486.4285714285716}, {"index": 36, "commitHash": "39e7803", "commitDate": "2026-08-06", "value": 14521.472727272727}, {"index": 37, "commitHash": "ef12a9c", "commitDate": "2026-08-06", "value": 22176.977777777778}, {"index": 38, "commitHash": "9ae2c68", "commitDate": "2026-08-06", "value": 28.647727272727273}, {"index": 39, "commitHash": "37354d3", "commitDate": "2026-08-06", "value": 63.72}, {"index": 40, "commitHash": "4b3f6d1", "commitDate": "2026-08-08", "value": 4878.963885429639}, {"index": 41, "commitHash": "27ca563", "commitDate": "2026-08-08", "value": 0.2539734025300032}, {"index": 42, "commitHash": "e2adf80", "commitDate": "2026-08-09", "value": 2396.5493895671475}, {"index": 43, "commitHash": "4b03f6d", "commitDate": "2026-08-11", "value": 5064.102639296188}, {"index": 44, "commitHash": "4e04148", "commitDate": "2026-08-11", "value": 11781.142857142857}, {"index": 45, "commitHash": "373a639", "commitDate": "2026-08-11", "value": 184.59899405578417}, {"index": 46, "commitHash": "02814aa", "commitDate": "2026-08-12", "value": 3073.6962430055955}, {"index": 47, "commitHash": "f8c4cd7", "commitDate": "2026-08-13", "value": 93235.21428571429}, {"index": 48, "commitHash": "03ebf1a", "commitDate": "2026-08-13", "value": 5.106341463414634}, {"index": 49, "commitHash": "0fcfbba", "commitDate": "2026-08-13", "value": 5876.853747714808}, {"index": 50, "commitHash": "4f88349", "commitDate": "2026-08-14", "value": 4202.073113207547}, {"index": 51, "commitHash": "776448c", "commitDate": "2026-08-14", "value": 3301.0833333333335}, {"index": 52, "commitHash": "d29f22c", "commitDate": "2026-08-14", "value": 1122.2553191489362}, {"index": 53, "commitHash": "6b7a387", "commitDate": "2026-08-14", "value": 3830.7895878524946}];
 const ADDED_SERIES = [{"commitHash": "cdfa82b", "commitDate": "2026-07-15", "value": 690}, {"commitHash": "a848be3", "commitDate": "2026-07-16", "value": 2016}, {"commitHash": "30a7cd7", "commitDate": "2026-07-16", "value": 0}, {"commitHash": "d28c8ab", "commitDate": "2026-07-17", "value": 112}, {"commitHash": "0848be1", "commitDate": "2026-07-17", "value": 0}, {"commitHash": "e26b722", "commitDate": "2026-07-17", "value": 0}, {"commitHash": "f66f22a", "commitDate": "2026-07-17", "value": 3}, {"commitHash": "9afbdd8", "commitDate": "2026-07-17", "value": 132}, {"commitHash": "27e247f", "commitDate": "2026-07-17", "value": 250}, {"commitHash": "7bdf328", "commitDate": "2026-07-18", "value": 1130}, {"commitHash": "63bbc03", "commitDate": "2026-07-19", "value": 2101}, {"commitHash": "d70e8d7", "commitDate": "2026-07-19", "value": 0}, {"commitHash": "cc835b2", "commitDate": "2026-07-20", "value": 896}, {"commitHash": "9745596", "commitDate": "2026-07-20", "value": 496}, {"commitHash": "9f58026", "commitDate": "2026-07-20", "value": 150}, {"commitHash": "75d62cc", "commitDate": "2026-07-21", "value": 31}, {"commitHash": "74d2d35", "commitDate": "2026-07-21", "value": 253}, {"commitHash": "dbdc470", "commitDate": "2026-07-25", "value": 2852}, {"commitHash": "b527c66", "commitDate": "2026-07-25", "value": 1403}, {"commitHash": "237877c", "commitDate": "2026-07-26", "value": 193}, {"commitHash": "8a6ac88", "commitDate": "2026-07-27", "value": 3129}, {"commitHash": "ea73dad", "commitDate": "2026-07-28", "value": 1478}, {"commitHash": "d55708e", "commitDate": "2026-07-28", "value": 201}, {"commitHash": "a3f4c87", "commitDate": "2026-07-29", "value": 830}, {"commitHash": "8616cde", "commitDate": "2026-07-30", "value": 2694}, {"commitHash": "cd1d07c", "commitDate": "2026-07-31", "value": 2628}, {"commitHash": "0673b5b", "commitDate": "2026-07-31", "value": 289}, {"commitHash": "83da65f", "commitDate": "2026-08-01", "value": 1073}, {"commitHash": "3ce3411", "commitDate": "2026-08-03", "value": 1228}, {"commitHash": "a689d77", "commitDate": "2026-08-05", "value": 285}, {"commitHash": "b0c0f9d", "commitDate": "2026-08-05", "value": 87}, {"commitHash": "beaea1b", "commitDate": "2026-08-05", "value": 87}, {"commitHash": "1bd2f8d", "commitDate": "2026-08-05", "value": 79}, {"commitHash": "42d5ac7", "commitDate": "2026-08-05", "value": 30}, {"commitHash": "810e713", "commitDate": "2026-08-05", "value": 0}, {"commitHash": "cb90a59", "commitDate": "2026-08-06", "value": 0}, {"commitHash": "39e7803", "commitDate": "2026-08-06", "value": 78}, {"commitHash": "ef12a9c", "commitDate": "2026-08-06", "value": 119}, {"commitHash": "9ae2c68", "commitDate": "2026-08-06", "value": 105}, {"commitHash": "37354d3", "commitDate": "2026-08-06", "value": 25}, {"commitHash": "4b3f6d1", "commitDate": "2026-08-08", "value": 871}, {"commitHash": "27ca563", "commitDate": "2026-08-08", "value": 3410}, {"commitHash": "e2adf80", "commitDate": "2026-08-09", "value": 1159}, {"commitHash": "4b03f6d", "commitDate": "2026-08-11", "value": 781}, {"commitHash": "4e04148", "commitDate": "2026-08-11", "value": 201}, {"commitHash": "373a639", "commitDate": "2026-08-11", "value": 2236}, {"commitHash": "02814aa", "commitDate": "2026-08-12", "value": 1333}, {"commitHash": "f8c4cd7", "commitDate": "2026-08-13", "value": 30}, {"commitHash": "03ebf1a", "commitDate": "2026-08-13", "value": 1569}, {"commitHash": "0fcfbba", "commitDate": "2026-08-13", "value": 1256}, {"commitHash": "4f88349", "commitDate": "2026-08-14", "value": 574}, {"commitHash": "776448c", "commitDate": "2026-08-14", "value": 1122}, {"commitHash": "d29f22c", "commitDate": "2026-08-14", "value": 59}, {"commitHash": "6b7a387", "commitDate": "2026-08-14", "value": 490}];
 const REMOVED_SERIES = [{"commitHash": "cdfa82b", "commitDate": "2026-07-15", "value": 0}, {"commitHash": "a848be3", "commitDate": "2026-07-16", "value": 176}, {"commitHash": "30a7cd7", "commitDate": "2026-07-16", "value": 0}, {"commitHash": "d28c8ab", "commitDate": "2026-07-17", "value": 23}, {"commitHash": "0848be1", "commitDate": "2026-07-17", "value": 0}, {"commitHash": "e26b722", "commitDate": "2026-07-17", "value": 0}, {"commitHash": "f66f22a", "commitDate": "2026-07-17", "value": 17}, {"commitHash": "9afbdd8", "commitDate": "2026-07-17", "value": 18}, {"commitHash": "27e247f", "commitDate": "2026-07-17", "value": 15}, {"commitHash": "7bdf328", "commitDate": "2026-07-18", "value": 257}, {"commitHash": "63bbc03", "commitDate": "2026-07-19", "value": 27}, {"commitHash": "d70e8d7", "commitDate": "2026-07-19", "value": 0}, {"commitHash": "cc835b2", "commitDate": "2026-07-20", "value": 157}, {"commitHash": "9745596", "commitDate": "2026-07-20", "value": 1}, {"commitHash": "9f58026", "commitDate": "2026-07-20", "value": 22}, {"commitHash": "75d62cc", "commitDate": "2026-07-21", "value": 14}, {"commitHash": "74d2d35", "commitDate": "2026-07-21", "value": 59}, {"commitHash": "dbdc470", "commitDate": "2026-07-25", "value": 486}, {"commitHash": "b527c66", "commitDate": "2026-07-25", "value": 284}, {"commitHash": "237877c", "commitDate": "2026-07-26", "value": 0}, {"commitHash": "8a6ac88", "commitDate": "2026-07-27", "value": 711}, {"commitHash": "ea73dad", "commitDate": "2026-07-28", "value": 878}, {"commitHash": "d55708e", "commitDate": "2026-07-28", "value": 63}, {"commitHash": "a3f4c87", "commitDate": "2026-07-29", "value": 368}, {"commitHash": "8616cde", "commitDate": "2026-07-30", "value": 864}, {"commitHash": "cd1d07c", "commitDate": "2026-07-31", "value": 110}, {"commitHash": "0673b5b", "commitDate": "2026-07-31", "value": 234}, {"commitHash": "83da65f", "commitDate": "2026-08-01", "value": 74}, {"commitHash": "3ce3411", "commitDate": "2026-08-03", "value": 67}, {"commitHash": "a689d77", "commitDate": "2026-08-05", "value": 65}, {"commitHash": "b0c0f9d", "commitDate": "2026-08-05", "value": 26}, {"commitHash": "beaea1b", "commitDate": "2026-08-05", "value": 8}, {"commitHash": "1bd2f8d", "commitDate": "2026-08-05", "value": 26}, {"commitHash": "42d5ac7", "commitDate": "2026-08-05", "value": 9}, {"commitHash": "810e713", "commitDate": "2026-08-05", "value": 0}, {"commitHash": "cb90a59", "commitDate": "2026-08-06", "value": 0}, {"commitHash": "39e7803", "commitDate": "2026-08-06", "value": 23}, {"commitHash": "ef12a9c", "commitDate": "2026-08-06", "value": 74}, {"commitHash": "9ae2c68", "commitDate": "2026-08-06", "value": 17}, {"commitHash": "37354d3", "commitDate": "2026-08-06", "value": 0}, {"commitHash": "4b3f6d1", "commitDate": "2026-08-08", "value": 68}, {"commitHash": "27ca563", "commitDate": "2026-08-08", "value": 327}, {"commitHash": "e2adf80", "commitDate": "2026-08-09", "value": 258}, {"commitHash": "4b03f6d", "commitDate": "2026-08-11", "value": 99}, {"commitHash": "4e04148", "commitDate": "2026-08-11", "value": 68}, {"commitHash": "373a639", "commitDate": "2026-08-11", "value": 49}, {"commitHash": "02814aa", "commitDate": "2026-08-12", "value": 82}, {"commitHash": "f8c4cd7", "commitDate": "2026-08-13", "value": 2}, {"commitHash": "03ebf1a", "commitDate": "2026-08-13", "value": 544}, {"commitHash": "0fcfbba", "commitDate": "2026-08-13", "value": 709}, {"commitHash": "4f88349", "commitDate": "2026-08-14", "value": 150}, {"commitHash": "776448c", "commitDate": "2026-08-14", "value": 222}, {"commitHash": "d29f22c", "commitDate": "2026-08-14", "value": 12}, {"commitHash": "6b7a387", "commitDate": "2026-08-14", "value": 29}];
 const ACTIVE_TIME_SERIES = [{"commitHash": "cdfa82b", "commitDate": "2026-07-15", "value": 2.749}, {"commitHash": "a848be3", "commitDate": "2026-07-16", "value": 5.442}, {"commitHash": "30a7cd7", "commitDate": "2026-07-16", "value": 0.129}, {"commitHash": "d28c8ab", "commitDate": "2026-07-17", "value": 1.245}, {"commitHash": "0848be1", "commitDate": "2026-07-17", "value": 0.173}, {"commitHash": "e26b722", "commitDate": "2026-07-17", "value": 0.079}, {"commitHash": "f66f22a", "commitDate": "2026-07-17", "value": 0.192}, {"commitHash": "9afbdd8", "commitDate": "2026-07-17", "value": 1.591}, {"commitHash": "27e247f", "commitDate": "2026-07-17", "value": 0.872}, {"commitHash": "7bdf328", "commitDate": "2026-07-18", "value": 2.947}, {"commitHash": "63bbc03", "commitDate": "2026-07-19", "value": 4.926}, {"commitHash": "d70e8d7", "commitDate": "2026-07-19", "value": 0.258}, {"commitHash": "cc835b2", "commitDate": "2026-07-20", "value": 3.394}, {"commitHash": "9745596", "commitDate": "2026-07-20", "value": 2.705}, {"commitHash": "9f58026", "commitDate": "2026-07-20", "value": 0.611}, {"commitHash": "75d62cc", "commitDate": "2026-07-21", "value": 0.647}, {"commitHash": "74d2d35", "commitDate": "2026-07-21", "value": 2.648}, {"commitHash": "dbdc470", "commitDate": "2026-07-25", "value": 7.909}, {"commitHash": "b527c66", "commitDate": "2026-07-25", "value": 3.749}, {"commitHash": "237877c", "commitDate": "2026-07-26", "value": 1.637}, {"commitHash": "8a6ac88", "commitDate": "2026-07-27", "value": 5.321}, {"commitHash": "ea73dad", "commitDate": "2026-07-28", "value": 1.861}, {"commitHash": "d55708e", "commitDate": "2026-07-28", "value": 0.586}, {"commitHash": "a3f4c87", "commitDate": "2026-07-29", "value": 1.879}, {"commitHash": "8616cde", "commitDate": "2026-07-30", "value": 6.405}, {"commitHash": "cd1d07c", "commitDate": "2026-07-31", "value": 4.538}, {"commitHash": "0673b5b", "commitDate": "2026-07-31", "value": 3.257}, {"commitHash": "83da65f", "commitDate": "2026-08-01", "value": 2.887}, {"commitHash": "3ce3411", "commitDate": "2026-08-03", "value": 2.913}, {"commitHash": "a689d77", "commitDate": "2026-08-05", "value": 1.276}, {"commitHash": "b0c0f9d", "commitDate": "2026-08-05", "value": 0.2}, {"commitHash": "beaea1b", "commitDate": "2026-08-05", "value": 0.354}, {"commitHash": "1bd2f8d", "commitDate": "2026-08-05", "value": 0.273}, {"commitHash": "42d5ac7", "commitDate": "2026-08-05", "value": 0.119}, {"commitHash": "810e713", "commitDate": "2026-08-05", "value": 0.507}, {"commitHash": "cb90a59", "commitDate": "2026-08-06", "value": 0.292}, {"commitHash": "39e7803", "commitDate": "2026-08-06", "value": 0.266}, {"commitHash": "ef12a9c", "commitDate": "2026-08-06", "value": 0.706}, {"commitHash": "9ae2c68", "commitDate": "2026-08-06", "value": 0.005}, {"commitHash": "37354d3", "commitDate": "2026-08-06", "value": 0.004}, {"commitHash": "4b3f6d1", "commitDate": "2026-08-08", "value": 4.593}, {"commitHash": "27ca563", "commitDate": "2026-08-08", "value": 0.005}, {"commitHash": "e2adf80", "commitDate": "2026-08-09", "value": 3.378}, {"commitHash": "4b03f6d", "commitDate": "2026-08-11", "value": 4.114}, {"commitHash": "4e04148", "commitDate": "2026-08-11", "value": 2.259}, {"commitHash": "373a639", "commitDate": "2026-08-11", "value": 0.876}, {"commitHash": "02814aa", "commitDate": "2026-08-12", "value": 4.112}, {"commitHash": "f8c4cd7", "commitDate": "2026-08-13", "value": 2.411}, {"commitHash": "03ebf1a", "commitDate": "2026-08-13", "value": 0.006}, {"commitHash": "0fcfbba", "commitDate": "2026-08-13", "value": 2.14}, {"commitHash": "4f88349", "commitDate": "2026-08-14", "value": 1.941}, {"commitHash": "776448c", "commitDate": "2026-08-14", "value": 1.73}, {"commitHash": "d29f22c", "commitDate": "2026-08-14", "value": 0.347}, {"commitHash": "6b7a387", "commitDate": "2026-08-14", "value": 2.321}];
@@ -475,7 +462,12 @@ function renderChart(svgId, tooltipId, primaryPoints, secondaryPoints, n, format
     const values = points.map(p => p.y);
     const dataMin = Math.min(...values), dataMax = Math.max(...values);
     const pad = (dataMax - dataMin) * 0.1 || Math.abs(dataMax) * 0.1 || 1;
-    const yMin = Math.max(0, dataMin - pad);
+    // No zero-clamp — every series here is non-negative by nature, so
+    // an unclamped floor just adds headroom below the lowest point
+    // instead of forcing the axis to sit exactly on a data point
+    // (which read as the line "touching"/"crossing" the bottom
+    // gridline whenever a series dipped low).
+    const yMin = dataMin - pad;
     const yMax = dataMax + pad;
     return { yMin, yMax, toY: v => marginTop + plotH - ((v - yMin) / (yMax - yMin || 1)) * plotH };
   }
@@ -628,7 +620,10 @@ function renderChart(svgId, tooltipId, primaryPoints, secondaryPoints, n, format
   });
 }
 
-function renderChurnChart(svgId, tooltipId, addedPoints, removedPoints, activePoints, n, formatLeft, formatRight) {
+/* LOC on the primary (left) axis; Lines added + Lines removed share
+   the secondary (right) axis. Replaces the old separate "codebase
+   size" + "churn vs. active time" charts. */
+function renderLocChurnChart(svgId, tooltipId, locPoints, addedPoints, removedPoints, n, formatLeft, formatRight) {
   const svg = document.getElementById(svgId);
   const tooltip = document.getElementById(tooltipId);
   const vb = svg.viewBox.baseVal;
@@ -642,7 +637,7 @@ function renderChurnChart(svgId, tooltipId, addedPoints, removedPoints, activePo
     const values = points.map(p => p.y);
     const dataMin = Math.min(...values), dataMax = Math.max(...values);
     const pad = (dataMax - dataMin) * 0.1 || Math.abs(dataMax) * 0.1 || 1;
-    const yMin = Math.max(0, dataMin - pad);
+    const yMin = dataMin - pad;
     const yMax = dataMax + pad;
     return { yMin, yMax, toY: v => marginTop + plotH - ((v - yMin) / (yMax - yMin || 1)) * plotH };
   }
@@ -693,7 +688,7 @@ function renderChurnChart(svgId, tooltipId, addedPoints, removedPoints, activePo
   defs.appendChild(grad);
   svg.appendChild(defs);
 
-  const leftScale = scaleFor(addedPoints.concat(removedPoints));
+  const leftScale = scaleFor(locPoints);
   for (let g = 0; g <= 4; g++) {
     const v = leftScale.yMin + (g / 4) * (leftScale.yMax - leftScale.yMin);
     const y = leftScale.toY(v);
@@ -703,11 +698,10 @@ function renderChurnChart(svgId, tooltipId, addedPoints, removedPoints, activePo
     svg.appendChild(label);
   }
 
-  svg.appendChild(el('path', { class: 'area-primary', fill: `url(#${gradId})`, d: areaPath(addedPoints, leftScale.toY) }));
-  svg.appendChild(el('path', { class: 'line-primary', d: smoothPath(addedPoints, leftScale.toY) }));
-  svg.appendChild(el('path', { class: 'line-removed', d: smoothPath(removedPoints, leftScale.toY) }));
+  svg.appendChild(el('path', { class: 'area-primary', fill: `url(#${gradId})`, d: areaPath(locPoints, leftScale.toY) }));
+  svg.appendChild(el('path', { class: 'line-primary', d: smoothPath(locPoints, leftScale.toY) }));
 
-  const rightScale = scaleFor(activePoints);
+  const rightScale = scaleFor(addedPoints.concat(removedPoints));
   for (let g = 0; g <= 4; g++) {
     const v = rightScale.yMin + (g / 4) * (rightScale.yMax - rightScale.yMin);
     const y = rightScale.toY(v);
@@ -715,24 +709,25 @@ function renderChurnChart(svgId, tooltipId, addedPoints, removedPoints, activePo
     label.textContent = formatRight(v);
     svg.appendChild(label);
   }
-  svg.appendChild(el('path', { class: 'line-secondary', d: smoothPath(activePoints, rightScale.toY) }));
+  svg.appendChild(el('path', { class: 'line-secondary', d: smoothPath(addedPoints, rightScale.toY) }));
+  svg.appendChild(el('path', { class: 'line-removed', d: smoothPath(removedPoints, rightScale.toY) }));
 
   const tickCount = Math.min(n, 5);
   for (let t = 0; t < tickCount; t++) {
     const i = tickCount === 1 ? 0 : Math.round((t / (tickCount - 1)) * (n - 1));
     const label = el('text', { class: 'axis-label', x: toX(i), y: H - marginBottom + 18, 'text-anchor': 'middle' });
-    label.textContent = addedPoints[i].xLabel;
+    label.textContent = locPoints[i].xLabel;
     svg.appendChild(label);
   }
 
   const crosshair = el('line', { class: 'crosshair', x1: 0, x2: 0, y1: marginTop, y2: baselineY, opacity: 0 });
   svg.appendChild(crosshair);
-  const hoverDotAdded = el('circle', { class: 'dot-primary hover-dot', r: 5, opacity: 0 });
+  const hoverDotLoc = el('circle', { class: 'dot-primary hover-dot', r: 5, opacity: 0 });
+  svg.appendChild(hoverDotLoc);
+  const hoverDotAdded = el('circle', { class: 'dot-secondary hover-dot', r: 5, opacity: 0 });
   svg.appendChild(hoverDotAdded);
   const hoverDotRemoved = el('circle', { class: 'dot-removed hover-dot', r: 5, opacity: 0 });
   svg.appendChild(hoverDotRemoved);
-  const hoverDotActive = el('circle', { class: 'dot-secondary hover-dot', r: 5, opacity: 0 });
-  svg.appendChild(hoverDotActive);
 
   const overlay = el('rect', {
     x: marginLeft, y: marginTop, width: Math.max(plotW, 0), height: Math.max(plotH, 0),
@@ -742,35 +737,35 @@ function renderChurnChart(svgId, tooltipId, addedPoints, removedPoints, activePo
 
   function linesFor(idx) {
     const x = toX(idx);
+    const lPoint = pointAt(locPoints, idx);
     const aPoint = pointAt(addedPoints, idx);
     const rPoint = pointAt(removedPoints, idx);
-    const cPoint = pointAt(activePoints, idx);
     const lines = [];
+    if (lPoint) lines.push(lPoint.label);
     if (aPoint) lines.push(aPoint.label);
     if (rPoint) lines.push(rPoint.label);
-    if (cPoint) lines.push(cPoint.label);
-    return { x, aPoint, rPoint, cPoint, lines };
+    return { x, lPoint, aPoint, rPoint, lines };
   }
 
   function setDotsAt(idx, opacity) {
-    const { x, aPoint, rPoint, cPoint } = linesFor(idx);
+    const { x, lPoint, aPoint, rPoint } = linesFor(idx);
     crosshair.setAttribute('x1', x);
     crosshair.setAttribute('x2', x);
     crosshair.setAttribute('opacity', opacity);
+    if (lPoint) {
+      hoverDotLoc.setAttribute('cx', x);
+      hoverDotLoc.setAttribute('cy', leftScale.toY(lPoint.y));
+      hoverDotLoc.setAttribute('opacity', opacity);
+    }
     if (aPoint) {
       hoverDotAdded.setAttribute('cx', x);
-      hoverDotAdded.setAttribute('cy', leftScale.toY(aPoint.y));
+      hoverDotAdded.setAttribute('cy', rightScale.toY(aPoint.y));
       hoverDotAdded.setAttribute('opacity', opacity);
     }
     if (rPoint) {
       hoverDotRemoved.setAttribute('cx', x);
-      hoverDotRemoved.setAttribute('cy', leftScale.toY(rPoint.y));
+      hoverDotRemoved.setAttribute('cy', rightScale.toY(rPoint.y));
       hoverDotRemoved.setAttribute('opacity', opacity);
-    }
-    if (cPoint) {
-      hoverDotActive.setAttribute('cx', x);
-      hoverDotActive.setAttribute('cy', rightScale.toY(cPoint.y));
-      hoverDotActive.setAttribute('opacity', opacity);
     }
   }
 
@@ -789,9 +784,9 @@ function renderChurnChart(svgId, tooltipId, addedPoints, removedPoints, activePo
 
   overlay.addEventListener('mouseleave', () => {
     crosshair.setAttribute('opacity', 0);
+    hoverDotLoc.setAttribute('opacity', 0);
     hoverDotAdded.setAttribute('opacity', 0);
     hoverDotRemoved.setAttribute('opacity', 0);
-    hoverDotActive.setAttribute('opacity', 0);
     tooltip.textContent = linesFor(latestIdx).lines.join('\n');
   });
 }
@@ -802,19 +797,12 @@ renderChart(
   null, TOKEN_SERIES.length, fmtTokens, fmtTokens
 );
 
-renderChart(
+renderLocChurnChart(
   'chart-loc', 'tooltip-loc',
   LOC_SERIES.map((p, i) => ({ i, y: p.value, xLabel: p.commitDate, label: `${p.commitDate} · ${fmtLoc(p.value)} LOC` })),
-  EFFICIENCY_SERIES.map(p => ({ i: p.index, y: p.value, label: `${p.commitDate} · ${fmtEff(p.value)} tokens/LOC` })),
-  LOC_SERIES.length, fmtLoc, fmtEff
-);
-
-renderChurnChart(
-  'chart-churn', 'tooltip-churn',
-  ADDED_SERIES.map((p, i) => ({ i, y: p.value, xLabel: p.commitDate, label: `${p.commitDate} · +${fmtChurn(p.value)} added` })),
+  ADDED_SERIES.map((p, i) => ({ i, y: p.value, label: `${p.commitDate} · +${fmtChurn(p.value)} added` })),
   REMOVED_SERIES.map((p, i) => ({ i, y: p.value, label: `${p.commitDate} · -${fmtChurn(p.value)} removed` })),
-  ACTIVE_TIME_SERIES.map((p, i) => ({ i, y: p.value, label: `${p.commitDate} · ${fmtHours(p.value)} active` })),
-  ADDED_SERIES.length, fmtChurn, fmtHours
+  LOC_SERIES.length, fmtLoc, fmtChurn
 );
 
 renderChart(
