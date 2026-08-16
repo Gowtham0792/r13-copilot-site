@@ -268,13 +268,42 @@ html, body {
 }
 
 .plx-09__zoom-eyebrow {
-  font-family: 'Big Shoulders Display', sans-serif;
-  font-size: 17.6px;
-  letter-spacing: 0.4em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.plx-09__zoom-pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Geist, not the display face — small badge text needs a face built
+   for legibility at low sizes, not a bold headline font. */
+.plx-09__zoom-pill {
+  font-family: 'Geist', system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--gold);
+  border: 1px solid rgba(212,168,67,0.5);
+  background: rgba(212,168,67,0.08);
+  border-radius: 999px;
+  padding: 6px 16px;
+}
+
+.plx-09__zoom-tagline {
+  font-family: 'Geist', system-ui, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  color: rgba(242,238,232,0.6);
   display: block;
-  margin-bottom: 16px;
 }
 
 .plx-09__zoom-h {
