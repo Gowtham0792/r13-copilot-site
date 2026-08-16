@@ -542,20 +542,24 @@ html, body {
 /* Feature number and title sit on one row, vertically centered against
    each other, rather than the number floating alone at the card's top
    with the title further down. */
+/* Float, not flexbox — flex's align-items only ever aligns against the
+   title's FULL block height, which looks right for a one-line title
+   but visibly sinks the icon once a title wraps to two lines (there's
+   no flex option that means "align with just the first line"). A
+   floated icon has the text wrap around it by definition: the first
+   line always sits level with the icon, and any second line simply
+   continues at full width below it — correct for any line count with
+   no measurement/JS needed. overflow: hidden establishes a new block
+   formatting context so this container's own height includes the
+   float instead of collapsing to zero. */
 .plx-08__card-head {
-  display: flex;
-  /* flex-start, not center — centering against the title's full
-     height only looks right for a single-line title; a two-line title
-     (e.g. card 01) then visibly sinks the icon below the first line.
-     flex-start keeps the icon aligned with the top of the title no
-     matter how many lines it wraps to. */
-  align-items: flex-start;
-  gap: 14px;
+  overflow: hidden;
   margin-bottom: 10px;
 }
 
 .plx-08__card-icon {
-  flex: none;
+  float: left;
+  margin-right: 14px;
   width: 48px;
   height: 48px;
   border-radius: 12px;
@@ -573,6 +577,9 @@ html, body {
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.2;
+  /* Centers the first line against the 48px floated icon
+     ((48px icon − 26.4px line box) / 2). */
+  padding-top: 11px;
 }
 
 .plx-08__card-body {
