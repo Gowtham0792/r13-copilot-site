@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>R13 Copilot</title>
 <meta name="description" content="R13 Copilot — a desktop tool for ECE R13 / AIS 113 trailer brake certification testing." />
-<link rel="stylesheet" href="style.css?v=20" />
+<link rel="stylesheet" href="style.css?v=21" />
 </head>
 <body>
 
@@ -201,6 +201,159 @@
 
 </div>
 
-<script src="script.js?v=20"></script>
+<!-- Architecture — content sourced from the R13 Copilot app's own
+     CLAUDE.md; structure adapted from a user-supplied reference
+     diagram, restyled to this site's dark ink/gold palette. Brand-logo
+     icons kept as live external references, per explicit user request
+     (a deliberate exception to this site's usual "vendor everything
+     locally" convention). -->
+<section class="plx-10">
+
+  <header class="plx-10__header">
+    <h2 class="plx-10__heading">Architecture</h2>
+    <div class="plx-10__pills-wrap">
+      <span class="plx-10__pills-label">Key Features</span>
+      <div class="plx-10__pills">
+        <span class="plx-10__pill">Test Planning</span>
+        <span class="plx-10__pill">Test Tracking</span>
+        <span class="plx-10__pill">Measurement Traceability</span>
+        <span class="plx-10__pill">Reporting and Export</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="plx-10__grid">
+
+    <div class="plx-10__tauri">
+      <div class="plx-10__tauri-label">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tauri/tauri-original.svg" class="plx-10__icon-sm">
+        Tauri Native Shell
+      </div>
+
+      <div class="plx-10__app-grid">
+
+        <div class="plx-10__layer">
+          <div class="plx-10__layer-title">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" class="plx-10__icon">
+            <h3>React UI (Frontend)</h3>
+          </div>
+
+          <div class="plx-10__card">
+            <div class="plx-10__card-header">
+              <img src="https://icon.icepanel.io/Technology/svg/Vite.js.svg" class="plx-10__icon-sm">
+              <h4>View &amp; Routing</h4>
+            </div>
+            <p>React 19 &amp; TypeScript 6.0 powered by Vite. Uses React Router (HashRouter) for native app navigation.</p>
+            <div class="plx-10__badges">
+              <span class="plx-10__badge"><img src="https://icon.icepanel.io/Technology/svg/Vite.js.svg" class="plx-10__badge-icon">Vite</span>
+              <span class="plx-10__badge"><img src="https://cdn.worldvectorlogo.com/logos/framer-motion.svg" class="plx-10__badge-icon">Framer Motion</span>
+            </div>
+          </div>
+
+          <div class="plx-10__card">
+            <div class="plx-10__card-header">
+              <img src="https://user-images.githubusercontent.com/958486/218346783-72be5ae3-b953-4dd7-b239-788a882fdad6.svg" class="plx-10__icon-sm">
+              <h4>State &amp; Validation</h4>
+            </div>
+            <p>Domain-scoped Zustand stores for isolated screen logic. Forms powered by React Hook Form + Zod.</p>
+            <div class="plx-10__badges">
+              <span class="plx-10__badge"><img src="https://user-images.githubusercontent.com/958486/218346783-72be5ae3-b953-4dd7-b239-788a882fdad6.svg" class="plx-10__badge-icon">Zustand</span>
+              <span class="plx-10__badge"><img src="https://raw.githubusercontent.com/colinhacks/zod/master/logo.svg" class="plx-10__badge-icon">Zod</span>
+            </div>
+          </div>
+
+          <div class="plx-10__card">
+            <div class="plx-10__card-header">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" class="plx-10__icon-sm">
+              <h4>Styling &amp; Charts</h4>
+            </div>
+            <p>Tailwind CSS 4.3 for utility-first styling. uPlot for high-performance time-series signal rendering.</p>
+          </div>
+        </div>
+
+        <div class="plx-10__layer">
+          <div class="plx-10__layer-title">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/rust/rust-original.svg" class="plx-10__icon">
+            <h3>Rust Core (Backend)</h3>
+          </div>
+
+          <div class="plx-10__card">
+            <div class="plx-10__card-header">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tauri/tauri-original.svg" class="plx-10__icon-sm">
+              <h4>Tauri IPC Bridge</h4>
+            </div>
+            <p>Type-safe asynchronous message passing between React and Rust. Isolates the UI from OS-level operations.</p>
+            <div class="plx-10__badges">
+              <span class="plx-10__badge">invoke()</span>
+              <span class="plx-10__badge">events</span>
+            </div>
+          </div>
+
+          <div class="plx-10__card">
+            <div class="plx-10__card-header">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" class="plx-10__icon-sm">
+              <h4>Off-thread Binary Parsing</h4>
+            </div>
+            <p>Parses high-frequency CANape .mdf / .mf4 vehicle data natively using mdf4-rs and vendored C++ mdflib.</p>
+            <div class="plx-10__badges">
+              <span class="plx-10__badge">mdf4-rs</span>
+              <span class="plx-10__badge">FFI</span>
+            </div>
+          </div>
+
+          <div class="plx-10__card">
+            <div class="plx-10__card-header">
+              <h4>Network &amp; Auth</h4>
+            </div>
+            <p>Handles SharePoint uploads via reqwest. Secures OAuth refresh tokens using Windows Credential Manager.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="plx-10__storage">
+
+      <div class="plx-10__layer">
+        <div class="plx-10__layer-title">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/sqlite/sqlite-original.svg" class="plx-10__icon">
+          <h3>Local Persistence</h3>
+        </div>
+        <div class="plx-10__card">
+          <div class="plx-10__card-header">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/sqlite/sqlite-original.svg" class="plx-10__icon-sm">
+            <h4>SQLite Databases</h4>
+          </div>
+          <p>Two isolated, portable DBs (vehicles.db &amp; sessions.db) accessed via tauri-plugin-sql to prevent lock contention.</p>
+        </div>
+        <div class="plx-10__card">
+          <div class="plx-10__card-header">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTct2BhzMV_WT5V28LCd2x7F2VbvztIU_vD_KljfMxYbR8XxgauSlQL5TA&s=10" class="plx-10__icon-sm plx-10__icon-round">
+            <h4>Measurement Archives</h4>
+          </div>
+          <p>Raw .mdf test instances organized into structured ZIP archives locally before upload.</p>
+        </div>
+      </div>
+
+      <div class="plx-10__layer">
+        <div class="plx-10__layer-title">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" class="plx-10__icon plx-10__icon-round">
+          <h3>Cloud Integrations</h3>
+        </div>
+        <div class="plx-10__card">
+          <div class="plx-10__card-header">
+            <h4>Microsoft Graph API</h4>
+          </div>
+          <p>OAuth Authorization Code + PKCE flow to securely upload certification-ready reports to SharePoint.</p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<script src="script.js?v=21"></script>
 </body>
 </html>
