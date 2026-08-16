@@ -862,6 +862,43 @@ html, body {
   }
 }
 
+@media (max-width: 600px) {
+  /* Every padding value below was tuned for desktop and stacks three
+     levels deep (.plx-10 > .plx-10__tauri > .plx-10__layer >
+     .plx-10__card) — on a narrow phone that compounds to ~85px of
+     padding eaten from each side before any real content, leaving
+     almost no room and making the whole section look broken/cramped
+     compared to desktop. Scaled down for phones specifically. */
+  .plx-10 {
+    padding: 40px 16px 60px;
+  }
+  .plx-10__grid {
+    gap: 16px;
+  }
+  .plx-10__tauri {
+    padding: 20px 16px;
+    border-radius: 20px;
+  }
+  .plx-10__tauri-label {
+    left: 16px;
+    padding: 6px 14px;
+    font-size: 13px;
+  }
+  .plx-10__app-grid {
+    gap: 16px;
+  }
+  .plx-10__storage {
+    gap: 16px;
+  }
+  .plx-10__layer {
+    padding: 16px;
+    gap: 14px;
+  }
+  .plx-10__card {
+    padding: 14px;
+  }
+}
+
 /* ═════════════════════════════════════════════════════════════════
    .plx-11 — Development Progress. Ported from the dashboard-maker
    artifact's own stylesheet — the original is a light "Apple-style"
@@ -970,7 +1007,7 @@ html, body {
 .plx-11 .hover-dot { pointer-events: none; }
 .plx-11 .crosshair { stroke: var(--border-strong); stroke-width: 1; stroke-dasharray: 3 3; pointer-events: none; }
 .plx-11 .legend {
-  display: flex; gap: 18px; margin: 0 0 14px; font-size: 12.5px; font-weight: 500;
+  display: flex; flex-wrap: wrap; row-gap: 6px; gap: 18px; margin: 0 0 14px; font-size: 12.5px; font-weight: 500;
   color: var(--text-muted);
 }
 .plx-11 .legend span { display: inline-flex; align-items: center; gap: 7px; }
@@ -992,5 +1029,32 @@ html, body {
 @media (max-width: 900px) {
   .plx-11 .cards {
     grid-template-columns: repeat(3, minmax(120px, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .plx-11 {
+    padding: 40px 16px 60px;
+  }
+  .plx-11 .chart-card {
+    padding: 18px 16px 14px;
+  }
+  /* The tooltip is absolutely positioned (top-right of the chart) so
+     it can float over live chart data on desktop without pushing
+     layout around — on a narrow phone there isn't room for that
+     overlay beside a wrapped multi-line legend, so it drops into
+     normal document flow instead (it already sits right after the
+     legend in the markup, so this reads as a plain caption line). */
+  .plx-11 .tooltip {
+    position: static;
+    display: block;
+    margin: 0 0 12px;
+    max-width: none;
+    min-width: 0;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .plx-11 .chart-wrap {
+    margin-top: 0;
   }
 }
