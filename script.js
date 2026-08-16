@@ -14,38 +14,23 @@
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (reduceMotion) return;
 
-  const zoomBlock   = document.getElementById('plx09-zoom');
-  const bg          = document.getElementById('plx09-bg');
-  const grid        = document.getElementById('plx09-grid');
-  const rings       = document.getElementById('plx09-rings');
-  const content     = document.getElementById('plx09-content');
-  const sub         = document.getElementById('plx09-sub');
-  const galCells    = [
-    document.getElementById('plx09-g1'),
-    document.getElementById('plx09-g2'),
-    document.getElementById('plx09-g3'),
-  ];
-  const outroBlock  = document.getElementById('plx09-outro');
-  const outroBg     = document.getElementById('plx09-outro-bg');
-  const outroText   = document.getElementById('plx09-outro-text');
+  const zoomBlock = document.getElementById('plx09-zoom');
+  const bg        = document.getElementById('plx09-bg');
+  const grid      = document.getElementById('plx09-grid');
+  const rings     = document.getElementById('plx09-rings');
+  const content   = document.getElementById('plx09-content');
+  const sub       = document.getElementById('plx09-sub');
 
   let ticking = false;
-
-  function prog(el) {
-    if (!el) return 0;
-    const r = el.getBoundingClientRect();
-    const h = el.offsetHeight - window.innerHeight;
-    return h > 0 ? Math.max(0, Math.min(1, -r.top / h)) : 0;
-  }
 
   function onScroll() {
     if (ticking) return;
     ticking = true;
     requestAnimationFrame(() => {
-      const vh = window.innerHeight;
+      const r = zoomBlock.getBoundingClientRect();
+      const h = zoomBlock.offsetHeight - window.innerHeight;
+      const p = h > 0 ? Math.max(0, Math.min(1, -r.top / h)) : 0;
 
-      // ── SCENE 1 ──
-      const p = prog(zoomBlock);
       // bg: scales from 1 → 2.2 (world rushes in)
       if (bg) bg.style.transform = `scale(${1 + p * 1.2})`;
       // grid: scales faster (closer layer)
@@ -53,7 +38,7 @@
       // rings: fly through (scale 1 → 3.5)
       if (rings) rings.style.transform = `translate(-50%,-50%) scale(${1 + p * 2.5})`;
 
-      // content: fade in after 35% scroll, slide up
+      // content: fade in early, slide up
       const cp = Math.max(0, (p - 0.14) / 0.34);
       if (content) {
         content.style.opacity = String(Math.min(1, cp * 1.5));
@@ -61,30 +46,89 @@
       }
       if (sub) sub.style.opacity = String(Math.min(1, Math.max(0, (p - 0.3) / 0.25)));
 
-      // ── GALLERY: parallax inside each cell ──
-      galCells.forEach((cell) => {
-        if (!cell) return;
-        const parent = cell.closest('.plx-09__cell');
-        if (!parent) return;
-        const r = parent.getBoundingClientRect();
-        if (r.bottom < -vh || r.top > vh * 2) return;
-        const centerOffset = (r.top + r.height / 2) - vh / 2;
-        // Cell comes in zoomed out (1.0) from below, scale up as it centers
-        const cellProg = Math.max(0, Math.min(1, (vh * 0.6 - r.top) / (vh * 0.8)));
-        const scaleVal = 1.0 + cellProg * 0.25;
-        const yShift = centerOffset * 0.1;
-        cell.style.transform = `scale(${scaleVal}) translateY(${yShift}px)`;
-      });
-
-      // ── OUTRO ──
-      const op = prog(outroBlock);
-      if (outroBg) outroBg.style.transform = `scale(${1 + op * 0.5})`;
-      if (outroText) outroText.style.transform = `scale(${1 + op * 0.06}) translateY(${op * -18}px)`;
-
       ticking = false;
     });
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+})();
+
+/*
+ * .plx-08 card grid — mouse-driven parallax/tilt, adapted from a second,
+ * separate CodeFronts MIT-licensed demo ("CSS Parallax Card Hover
+ * Effect"), used with permission per the source's own license. One
+ * adjustment: the mousemove/touchmove listeners are never attached at
+ * all under prefers-reduced-motion (the CSS already forces static
+ * transforms via !important in that case — not attaching the listener
+ * is the cleaner version of that same guarantee).
+ */
+(() => {
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduceMotion) return;
+
+  const root = document.querySelector('.plx-08');
+  if (!root) return;
+
+  const cards = Array.from(root.querySelectorAll('.plx-08__card'));
+
+  const TILT_MAX = 18; // degrees
+  const BG_SPEED = 0.3;
+  const GEO_SPEED = -0.5;
+  const CONTENT_SPEED = 0.7;
+
+  cards.forEach(card => {
+    const bg = card.querySelector('.plx-08__card-bg');
+    const light = card.querySelector('.plx-08__card-light');
+    const geo = card.querySelector('.plx-08__card-geo');
+    const content = card.querySelector('.plx-08__card-content');
+
+    function onMove(e) {
+      const rect = card.getBoundingClientRect();
+      // Normalized position: -1 to 1
+      const nx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      const ny = ((e.clientY - rect.top) / rect.height) * 2 - 1;
+
+      // Card tilt
+      const rotX = -ny * TILT_MAX;
+      const rotY = nx * TILT_MAX;
+      card.style.transform = `perspective(800px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+
+      // BG drifts slowly in same direction
+      const bgX = nx * 20 * BG_SPEED;
+      const bgY = ny * 20 * BG_SPEED;
+      if (bg) bg.style.transform = `translateX(${bgX}px) translateY(${bgY}px)`;
+
+      // Light follows cursor
+      if (light) light.style.background = `radial-gradient(circle at ${(nx+1)/2*100}% ${(ny+1)/2*100}%, rgba(255,255,255,0.15) 0%, transparent 55%)`;
+
+      // Geo drifts in opposite direction (depth separation)
+      const geoX = nx * 20 * GEO_SPEED;
+      const geoY = ny * 20 * GEO_SPEED;
+      if (geo) geo.style.transform = `translateX(${geoX}px) translateY(${geoY}px)`;
+
+      // Content pops forward
+      const contentX = nx * 12 * CONTENT_SPEED;
+      const contentY = ny * 12 * CONTENT_SPEED;
+      if (content) content.style.transform = `translateX(${contentX}px) translateY(${contentY}px) translateZ(20px)`;
+    }
+
+    function onLeave() {
+      card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg)';
+      if (bg) bg.style.transform = 'translateX(0px) translateY(0px)';
+      if (geo) geo.style.transform = 'translateX(0px) translateY(0px)';
+      if (content) content.style.transform = 'translateX(0px) translateY(0px) translateZ(0px)';
+      if (light) light.style.background = 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.12) 0%, transparent 60%)';
+    }
+
+    function onTouch(e) {
+      const t = e.touches[0];
+      onMove({ clientX: t.clientX, clientY: t.clientY });
+    }
+
+    card.addEventListener('mousemove', onMove);
+    card.addEventListener('mouseleave', onLeave);
+    card.addEventListener('touchmove', onTouch, { passive: true });
+    card.addEventListener('touchend', onLeave);
+  });
 })();
