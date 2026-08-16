@@ -309,6 +309,12 @@ html, body {
 .plx-09__zoom-h.cat-15a__word {
   position: relative;
   cursor: crosshair;
+  /* .plx-09__zoom-content (this element's parent) sets
+     pointer-events: none so the eyebrow/sub text never intercepts
+     scroll/click — pointer-events inherits, so without this override
+     the headline itself would never receive hover/focus either,
+     silently disabling the whole glitch effect. */
+  pointer-events: auto;
 }
 
 .plx-09__zoom-h.cat-15a__word::before,
