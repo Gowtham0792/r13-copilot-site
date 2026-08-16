@@ -55,6 +55,40 @@
 })();
 
 /*
+ * #plx09-backdrop — a fixed layer behind the whole page, giving the zoom
+ * scene's grid/glow atmosphere continuity past the first section. Kept
+ * intentionally subtle: a slow drift tied to total scroll position, not
+ * a second zoom effect. Gated behind prefers-reduced-motion like every
+ * other motion on this site.
+ */
+(() => {
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduceMotion) return;
+
+  const grid = document.getElementById('plx09-backdrop-grid');
+  const glow = document.getElementById('plx09-backdrop-glow');
+  if (!grid && !glow) return;
+
+  let ticking = false;
+
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const y = window.scrollY;
+      // Very slow drift — grid crawls, glow drifts even slower, so the
+      // backdrop feels alive without competing with foreground content.
+      if (grid) grid.style.transform = `translateY(${(y * 0.03) % 80}px)`;
+      if (glow) glow.style.transform = `translateY(${y * 0.015}px)`;
+      ticking = false;
+    });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+
+/*
  * .plx-08 card grid — mouse-driven parallax/tilt, adapted from a second,
  * separate CodeFronts MIT-licensed demo ("CSS Parallax Card Hover
  * Effect"), used with permission per the source's own license. One

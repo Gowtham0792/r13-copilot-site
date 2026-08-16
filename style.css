@@ -82,6 +82,36 @@ html, body {
   background: #080608;
 }
 
+/* Fixed backdrop — an always-visible echo of the zoom scene's own grid
+   + gold glow, kept behind everything (z-index: -1) so that atmosphere
+   reads as continuous down the whole page instead of stopping once the
+   .plx-09__zoom block itself scrolls out of view. Deliberately not a
+   duplicate of the rings/dot — those belong to the zoom moment only. */
+#plx09-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: #080608;
+}
+
+#plx09-backdrop-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(212,168,67,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212,168,67,0.05) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+#plx09-backdrop-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 45% at 50% 0%, rgba(212,168,67,0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 50% 100%, rgba(212,168,67,0.06) 0%, transparent 60%);
+}
+
 .plx-09,
 .plx-09 *,
 .plx-09 *::before,
@@ -96,7 +126,10 @@ html, body {
   --ink: #080608;
   --off: #f2eee8;
   min-height: 100vh;
-  background: var(--ink);
+  /* Translucent, not opaque — lets #plx09-backdrop's fixed grid/glow
+     bleed through so the atmosphere reads as continuous with the rest
+     of the page rather than sealed off inside this block. */
+  background: rgba(8,6,8,0.94);
   color: var(--off);
   font-family: 'Libre Baskerville', serif;
   /* overflow-x:hidden was breaking position:sticky on descendants.
@@ -265,6 +298,11 @@ html, body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  #plx09-backdrop-grid,
+    #plx09-backdrop-glow {
+    transform: none !important;
+  }
+
   .plx-09__zoom-bg,
     .plx-09__zoom-grid,
     .plx-09__rings {
@@ -306,7 +344,10 @@ html, body {
   --text: #e8e8f0;
   --muted: rgba(232,232,240,0.45);
   --card-h: 440px;
-  background: var(--bg);
+  /* Translucent, not opaque — see #plx09-backdrop's own comment above;
+     each card's own background (below) stays fully opaque so card
+     content is unaffected. */
+  background: rgba(12,12,16,0.88);
   color: var(--text);
   font-family: 'Geist', system-ui, sans-serif;
   min-height: 100vh;
