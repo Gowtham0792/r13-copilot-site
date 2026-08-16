@@ -816,6 +816,15 @@ html, body {
   border-radius: 5px;
 }
 
+/* The Rust devicon is solid black on transparent — invisible/near-
+   invisible against this section's dark cards. brightness(0) forces
+   any near-black pixels to pure black first (in case the source isn't
+   exactly #000), then invert(1) flips black to white; transparent
+   pixels are unaffected either way. */
+.plx-10__icon--white {
+  filter: brightness(0) invert(1);
+}
+
 .plx-10__badges {
   display: flex;
   flex-wrap: wrap;
