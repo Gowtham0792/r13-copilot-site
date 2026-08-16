@@ -315,13 +315,22 @@ html, body {
 }
 
 .plx-09__zoom-sub {
-  margin-top: 24px;
-  font-style: italic;
+  /* Geist, not the italic serif — small body copy needs a face built
+     for legibility, not a display/serif pairing. margin: 0 auto
+     centers the block itself (text-align: center on the parent only
+     centers inline content *within* this block; without the auto
+     margins the block was capped at max-width but left-aligned inside
+     its wider container, which read as visibly off-center). */
+  margin: 24px auto 0;
+  font-family: 'Geist', system-ui, sans-serif;
+  font-style: normal;
+  font-weight: 400;
   font-size: 17px;
   line-height: 1.7;
+  text-align: center;
   opacity: 0;
   color: rgba(242,238,232,0.55);
-  max-width: 420px;
+  max-width: 460px;
   display: block;
   will-change: opacity;
 }
