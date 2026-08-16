@@ -321,16 +321,16 @@ html, body {
      centers inline content *within* this block; without the auto
      margins the block was capped at max-width but left-aligned inside
      its wider container, which read as visibly off-center). */
-  margin: 24px auto 0;
+  margin: 56px auto 0;
   font-family: 'Geist', system-ui, sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 17px;
+  font-size: 24.65px;
   line-height: 1.7;
   text-align: center;
   opacity: 0;
   color: rgba(242,238,232,0.55);
-  max-width: 460px;
+  max-width: 560px;
   display: block;
   will-change: opacity;
 }
