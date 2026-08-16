@@ -333,14 +333,13 @@ section.block {
   padding: 1.9rem;
   opacity: 0;
   transform: translateY(16px);
-  transition: background-color 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 
 .bento-card.wide { grid-column: span 4; display: flex; align-items: center; gap: 2rem; }
 .bento-card:hover {
   background: var(--surface-2);
   border-color: rgba(255, 255, 255, 0.16);
-  transform: translateY(-4px);
 }
 
 @media (max-width: 760px) {
@@ -364,6 +363,47 @@ section.block {
 .bento-card.wide .icon-badge { margin-bottom: 0; }
 
 .icon-badge svg { width: 24px; height: 24px; }
+
+/* ---------- tilt-card: mouse-driven parallax, 3 independent layers ----------
+   1. the card itself tilts in 3D toward the cursor (script.js, GSAP
+      quickTo on rotateX/rotateY — smoothed, not an instant snap).
+   2. a cursor-following spotlight (this file, a radial-gradient ::before
+      whose center tracks --mx/--my, two plain custom properties script.js
+      updates directly — no smoothing needed for a spotlight, it should
+      feel glued to the pointer).
+   3. the icon badge shifts opposite the tilt by a small amount (script.js,
+      its own quickTo pair) so it visibly reads as sitting *above* the
+      card's own surface — the actual parallax cue, not just a tilt. */
+
+.tilt-card {
+  --mx: 50%;
+  --my: 50%;
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.tilt-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(360px circle at var(--mx) var(--my), rgba(255, 255, 255, 0.14), transparent 62%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+.tilt-card:hover::before,
+.tilt-card:focus-within::before {
+  opacity: 1;
+}
+
+.tilt-card .icon-badge {
+  position: relative;
+  transform: translateZ(0);
+  will-change: transform;
+}
 
 .bento-card h3 {
   margin: 0 0 0.5rem;
@@ -416,6 +456,12 @@ section.block {
   border: 1px solid var(--line);
   border-radius: 1.25rem;
   padding: 1.6rem 1.75rem;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.stack-panel:hover {
+  background: var(--surface-2);
+  border-color: rgba(255, 255, 255, 0.16);
 }
 
 .stack-panel h3 {

@@ -54,4 +54,48 @@
       },
     });
   });
+
+  // ---- tilt-card: per-card mouse-driven parallax, 3 independent layers ----
+  // 1. the card itself tilts in 3D toward the cursor (smoothed via
+  //    quickTo, not an instant snap).
+  // 2. a cursor-following spotlight — the CSS ::before in style.css reads
+  //    the --mx/--my custom properties this sets directly on every move
+  //    (no smoothing here; a spotlight should feel glued to the pointer).
+  // 3. the icon badge shifts opposite the cursor by a small amount, its
+  //    own independent quickTo — the piece that actually sells "this is
+  //    layered," not just tilted as one flat card.
+  gsap.utils.toArray(".tilt-card").forEach(function (card) {
+    var rotateX = gsap.quickTo(card, "rotateX", { duration: 0.5, ease: "power3.out" });
+    var rotateY = gsap.quickTo(card, "rotateY", { duration: 0.5, ease: "power3.out" });
+    var icon = card.querySelector(".icon-badge");
+    var iconX = icon ? gsap.quickTo(icon, "x", { duration: 0.4, ease: "power3.out" }) : null;
+    var iconY = icon ? gsap.quickTo(icon, "y", { duration: 0.4, ease: "power3.out" }) : null;
+
+    card.addEventListener("pointermove", function (e) {
+      var rect = card.getBoundingClientRect();
+      var px = (e.clientX - rect.left) / rect.width; // 0..1
+      var py = (e.clientY - rect.top) / rect.height;
+
+      card.style.setProperty("--mx", px * 100 + "%");
+      card.style.setProperty("--my", py * 100 + "%");
+
+      var nx = px - 0.5; // -0.5..0.5
+      var ny = py - 0.5;
+      rotateX(-ny * 10);
+      rotateY(nx * 10);
+      if (iconX && iconY) {
+        iconX(-nx * 14);
+        iconY(-ny * 14);
+      }
+    });
+
+    card.addEventListener("pointerleave", function () {
+      rotateX(0);
+      rotateY(0);
+      if (iconX && iconY) {
+        iconX(0);
+        iconY(0);
+      }
+    });
+  });
 })();
