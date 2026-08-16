@@ -530,7 +530,27 @@ html, body {
   transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
+.plx-08__card-tag {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.4;
+  margin-bottom: 14px;
+}
+
+/* Feature number and title sit on one row, vertically centered against
+   each other, rather than the number floating alone at the card's top
+   with the title further down. */
+.plx-08__card-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+
 .plx-08__card-icon {
+  flex: none;
   width: 48px;
   height: 48px;
   border-radius: 12px;
@@ -541,16 +561,6 @@ html, body {
   font-family: 'Geist Mono', monospace;
   font-size: 13px;
   letter-spacing: 0.05em;
-  margin-bottom: auto;
-}
-
-.plx-08__card-tag {
-  font-family: 'Geist Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  opacity: 0.4;
-  margin-bottom: 10px;
 }
 
 .plx-08__card-title {
@@ -558,7 +568,6 @@ html, body {
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.2;
-  margin-bottom: 10px;
 }
 
 .plx-08__card-body {
