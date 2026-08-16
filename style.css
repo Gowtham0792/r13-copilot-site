@@ -959,6 +959,7 @@ html, body {
 .plx-11 svg.chart { width: 100%; height: auto; display: block; overflow: visible; }
 .plx-11 .axis-label { font-size: 11px; fill: var(--text-muted); font-variant-numeric: tabular-nums; }
 .plx-11 .grid-line { stroke: var(--border); stroke-width: 1; }
+.plx-11 .bar { fill: var(--accent); cursor: pointer; transition: opacity 0.15s ease; }
 .plx-11 .line-primary { fill: none; stroke: var(--accent); stroke-width: 2.25; stroke-linecap: round; stroke-linejoin: round; }
 .plx-11 .line-secondary { fill: none; stroke: var(--secondary); stroke-width: 2; stroke-dasharray: 5 4; stroke-linecap: round; }
 .plx-11 .line-removed { fill: none; stroke: var(--removed); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }

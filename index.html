@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>R13 Copilot</title>
 <meta name="description" content="R13 Copilot — a desktop tool for ECE R13 / AIS 113 trailer brake certification testing." />
-<link rel="stylesheet" href="style.css?v=26" />
+<link rel="stylesheet" href="style.css?v=27" />
 </head>
 <body>
 
@@ -409,10 +409,10 @@
     </div>
 
     <div class="chart-card">
-      <p class="chart-title">Bugs reported per week</p>
-      <div class="tooltip" id="tooltip-bugs"></div>
+      <p class="chart-title">Cumulative PRs over time</p>
+      <div class="tooltip" id="tooltip-prs"></div>
       <div class="chart-wrap">
-        <svg class="chart" id="chart-bugs" viewBox="0 0 900 320"></svg>
+        <svg class="chart" id="chart-prs" viewBox="0 0 900 320"></svg>
       </div>
     </div>
 
@@ -420,7 +420,7 @@
 
 </section>
 
-<script src="script.js?v=26"></script>
+<script src="script.js?v=27"></script>
 <script>
 /* Ported verbatim from the dashboard-maker artifact — chart math/
    rendering logic and datasets unchanged, see the section comment
@@ -791,6 +791,70 @@ function renderLocChurnChart(svgId, tooltipId, locPoints, addedPoints, removedPo
   });
 }
 
+/* Bar chart — bars anchor to a real y=0 baseline (correct for a bar
+   chart, unlike the "no zero-clamp" fix applied to the line/area
+   charts above). Per-bar hover instead of a continuous crosshair. */
+function renderBarChart(svgId, tooltipId, points, n, format) {
+  const svg = document.getElementById(svgId);
+  const tooltip = document.getElementById(tooltipId);
+  const vb = svg.viewBox.baseVal;
+  const W = vb.width, H = vb.height;
+  const marginLeft = 56, marginRight = 20, marginTop = 16, marginBottom = 36;
+  const plotW = W - marginLeft - marginRight;
+  const plotH = H - marginTop - marginBottom;
+  const baselineY = marginTop + plotH;
+
+  const values = points.map(p => p.y);
+  const yMax = Math.max(...values) * 1.1 || 1;
+  const toY = v => marginTop + plotH - (v / yMax) * plotH;
+
+  const slot = plotW / n;
+  const barWidth = Math.max(slot * 0.55, 4);
+  const toX = i => marginLeft + slot * i + (slot - barWidth) / 2;
+
+  const NS = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs) {
+    const e = document.createElementNS(NS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+
+  svg.innerHTML = '';
+
+  for (let g = 0; g <= 4; g++) {
+    const v = (g / 4) * yMax;
+    const y = toY(v);
+    svg.appendChild(el('line', { class: 'grid-line', x1: marginLeft, x2: W - marginRight, y1: y, y2: y }));
+    const label = el('text', { class: 'axis-label', x: marginLeft - 8, y: y + 4, 'text-anchor': 'end' });
+    label.textContent = format(v);
+    svg.appendChild(label);
+  }
+
+  points.forEach((p, i) => {
+    const x = toX(i);
+    const y = toY(p.y);
+    const bar = el('rect', {
+      class: 'bar', x, y, width: barWidth, height: Math.max(baselineY - y, 0), rx: 3,
+    });
+    svg.appendChild(bar);
+
+    const label = el('text', { class: 'axis-label', x: x + barWidth / 2, y: H - marginBottom + 18, 'text-anchor': 'middle' });
+    label.textContent = p.xLabel;
+    svg.appendChild(label);
+
+    bar.addEventListener('mouseenter', () => {
+      bar.setAttribute('opacity', '0.75');
+      tooltip.textContent = p.label;
+    });
+    bar.addEventListener('mouseleave', () => {
+      bar.setAttribute('opacity', '1');
+      tooltip.textContent = points[points.length - 1].label;
+    });
+  });
+
+  tooltip.textContent = points[points.length - 1].label;
+}
+
 renderChart(
   'chart-tokens', 'tooltip-tokens',
   TOKEN_SERIES.map((p, i) => ({ i, y: p.value, xLabel: p.commitDate, label: `${p.commitDate} · ${fmtTokens(p.value)} tokens` })),
@@ -812,10 +876,18 @@ renderChart(
   FEATURE_DONE_SERIES.length, fmtCount, fmtCount, true
 );
 
-renderChart(
-  'chart-bugs', 'tooltip-bugs',
-  BUGS_PER_WEEK_SERIES.map((p, i) => ({ i, y: p.value, xLabel: p.weekLabel, label: `Week of ${p.weekLabel} · ${p.value} bug${p.value === 1 ? '' : 's'} reported` })),
-  null, BUGS_PER_WEEK_SERIES.length, fmtCount, fmtCount
+/* Cumulative PR count — derived from BUGS_PER_WEEK_SERIES (each
+   recorded bug maps to one fix PR; the series sums to exactly 56,
+   matching the "Recorded PRs" total card, confirmed with the user).
+   A running sum of real weekly data, not a fabricated curve. */
+let prCumulative = 0;
+renderBarChart(
+  'chart-prs', 'tooltip-prs',
+  BUGS_PER_WEEK_SERIES.map((p) => {
+    prCumulative += p.value;
+    return { xLabel: p.weekLabel, y: prCumulative, label: `Week of ${p.weekLabel} · ${prCumulative} PRs cumulative` };
+  }),
+  BUGS_PER_WEEK_SERIES.length, fmtCount
 );
 </script>
 </body>
