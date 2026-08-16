@@ -99,17 +99,17 @@ html, body {
   position: absolute;
   inset: -10%;
   background-image:
-    linear-gradient(rgba(212,168,67,0.16) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(212,168,67,0.16) 1px, transparent 1px);
-  background-size: 80px 80px;
+    linear-gradient(rgba(212,168,67,0.4) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212,168,67,0.4) 1px, transparent 1px);
+  background-size: 60px 60px;
 }
 
 #plx09-backdrop-glow {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 70% 55% at 50% 0%, rgba(212,168,67,0.24) 0%, transparent 62%),
-    radial-gradient(ellipse 60% 50% at 50% 100%, rgba(212,168,67,0.16) 0%, transparent 62%);
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(212,168,67,0.45) 0%, transparent 65%),
+    radial-gradient(ellipse 70% 55% at 50% 100%, rgba(212,168,67,0.32) 0%, transparent 65%);
 }
 
 .plx-09,
@@ -348,7 +348,7 @@ html, body {
      each card's own background (below) stays fully opaque so card
      content is unaffected. Kept low enough that the backdrop's grid/
      glow actually reads, not just a barely-there tint. */
-  background: rgba(12,12,16,0.62);
+  background: rgba(12,12,16,0.35);
   color: var(--text);
   font-family: 'Geist', system-ui, sans-serif;
   min-height: 100vh;
