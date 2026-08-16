@@ -861,3 +861,132 @@ html, body {
     grid-template-columns: 1fr;
   }
 }
+
+/* ═════════════════════════════════════════════════════════════════
+   .plx-11 — Development Progress. Ported from the dashboard-maker
+   artifact's own stylesheet — the original is a light "Apple-style"
+   theme, but its colors/surfaces were already expressed as CSS custom
+   properties, so the dark restyle here is just redefining those
+   properties under .plx-11 (not :root, so nothing leaks onto the rest
+   of the page) rather than rewriting every rule. Layout/chart-drawing
+   rule bodies below are otherwise unchanged from the source.
+   ═════════════════════════════════════════════════════════════════ */
+
+.plx-11 {
+  --bg: transparent;
+  --surface: rgba(255,255,255,0.035); --surface-alt: rgba(255,255,255,0.05);
+  --border: rgba(255,255,255,0.08); --border-strong: rgba(255,255,255,0.16);
+  --text: #e8e8f0; --text-muted: rgba(232,232,240,0.55);
+  --accent: var(--gold, #d4a843); --accent-2: #e0b95c; --secondary: #ff9f43; --removed: #ff6b5e;
+  --sans: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --shadow: 0 1px 2px rgba(0,0,0,.25), 0 6px 20px rgba(0,0,0,.35);
+  --radius: 16px;
+  color: var(--text);
+  font-family: var(--sans);
+  padding: 60px 40px 100px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.plx-11 * { box-sizing: border-box; }
+
+.plx-11__header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.plx-11__heading {
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.plx-11__subhead {
+  font-size: 14px;
+  color: var(--text-muted);
+  font-weight: 400;
+  letter-spacing: -0.005em;
+}
+
+.plx-11 .wrap { max-width: 1320px; margin: 0 auto; }
+
+.plx-11 .cards {
+  display: grid; grid-template-columns: repeat(7, minmax(150px, 1fr));
+  gap: 10px; margin-bottom: 24px; overflow-x: auto;
+}
+.plx-11 .card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px; padding: 16px 16px 14px;
+  box-shadow: var(--shadow);
+}
+.plx-11 .card.accent-blue { --card-accent: var(--accent); }
+.plx-11 .card.accent-red { --card-accent: var(--removed); }
+.plx-11 .card.accent-amber { --card-accent: var(--secondary); }
+.plx-11 .card .label {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12.5px; font-weight: 500; color: var(--text-muted); margin: 0 0 9px;
+  letter-spacing: -0.005em;
+}
+.plx-11 .card .label::before {
+  content: ""; width: 7px; height: 7px; border-radius: 50%; flex: none;
+  background: var(--card-accent, var(--border-strong));
+}
+.plx-11 .card .value {
+  font-size: 23px; font-weight: 700; letter-spacing: -0.02em; color: var(--text);
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.plx-11 .card .subvalue {
+  font-size: 12.5px; font-weight: 400; color: var(--text-muted); margin: 3px 0 0;
+  font-variant-numeric: tabular-nums; letter-spacing: -0.005em;
+}
+.plx-11 .chart-card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 24px 16px;
+  margin-bottom: 16px; box-shadow: var(--shadow);
+}
+.plx-11 .chart-title {
+  font-size: 16px; font-weight: 600; color: var(--text); margin: 0 0 14px;
+  letter-spacing: -0.01em;
+}
+.plx-11 svg.chart { width: 100%; height: auto; display: block; overflow: visible; }
+.plx-11 .axis-label { font-size: 11px; fill: var(--text-muted); font-variant-numeric: tabular-nums; }
+.plx-11 .grid-line { stroke: var(--border); stroke-width: 1; }
+.plx-11 .line-primary { fill: none; stroke: var(--accent); stroke-width: 2.25; stroke-linecap: round; stroke-linejoin: round; }
+.plx-11 .line-secondary { fill: none; stroke: var(--secondary); stroke-width: 2; stroke-dasharray: 5 4; stroke-linecap: round; }
+.plx-11 .line-removed { fill: none; stroke: var(--removed); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.plx-11 .area-primary { pointer-events: none; opacity: .5; }
+.plx-11 .dot-primary { fill: var(--surface); stroke: var(--accent); stroke-width: 2.5; }
+.plx-11 .dot-secondary { fill: var(--surface); stroke: var(--secondary); stroke-width: 2.5; }
+.plx-11 .dot-removed { fill: var(--surface); stroke: var(--removed); stroke-width: 2.5; }
+.plx-11 .hover-dot { pointer-events: none; }
+.plx-11 .crosshair { stroke: var(--border-strong); stroke-width: 1; stroke-dasharray: 3 3; pointer-events: none; }
+.plx-11 .legend {
+  display: flex; gap: 18px; margin: 0 0 14px; font-size: 12.5px; font-weight: 500;
+  color: var(--text-muted);
+}
+.plx-11 .legend span { display: inline-flex; align-items: center; gap: 7px; }
+.plx-11 .swatch { width: 14px; height: 3px; border-radius: 2px; display: inline-block; }
+.plx-11 .swatch.primary { background: var(--accent); }
+.plx-11 .swatch.secondary { height: 2px; background-image: repeating-linear-gradient(90deg, var(--secondary) 0 5px, transparent 5px 8px); }
+.plx-11 .swatch.removed { background: var(--removed); }
+.plx-11 .chart-wrap { position: relative; margin-top: 54px; }
+.plx-11 .tooltip {
+  position: absolute; top: 22px; right: 24px; pointer-events: none;
+  background: rgba(20,20,28,.86); backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border: 1px solid var(--border); color: var(--text);
+  font-size: 12.5px; font-weight: 500; line-height: 1.7; padding: 10px 14px;
+  border-radius: 12px; box-shadow: var(--shadow);
+  white-space: pre-line; min-width: 150px; max-width: 220px; z-index: 10;
+}
+
+@media (max-width: 900px) {
+  .plx-11 .cards {
+    grid-template-columns: repeat(3, minmax(120px, 1fr));
+  }
+}
