@@ -23,7 +23,7 @@
 <meta name="twitter:description" content="A desktop tool for ECE R13 / AIS 113 trailer brake certification testing." />
 <meta name="twitter:image" content="https://gowtham0792.github.io/r13-copilot-site/og-image.png" />
 
-<link rel="stylesheet" href="style.css?v=28" />
+<link rel="stylesheet" href="style.css?v=29" />
 </head>
 <body>
 
@@ -438,7 +438,7 @@
 
 </section>
 
-<script src="script.js?v=28"></script>
+<script src="script.js?v=29"></script>
 <script>
 /* Ported verbatim from the dashboard-maker artifact — chart math/
    rendering logic and datasets unchanged, see the section comment
@@ -898,12 +898,17 @@ renderChart(
    recorded bug maps to one fix PR; the series sums to exactly 56,
    matching the "Recorded PRs" total card, confirmed with the user).
    A running sum of real weekly data, not a fabricated curve. */
+const fmtShortDate = d => {
+  const [, m, day] = d.split('-');
+  const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${MONTHS[parseInt(m, 10) - 1]} ${parseInt(day, 10)}`;
+};
 let prCumulative = 0;
 renderBarChart(
   'chart-prs', 'tooltip-prs',
   BUGS_PER_WEEK_SERIES.map((p) => {
     prCumulative += p.value;
-    return { xLabel: p.weekLabel, y: prCumulative, label: `Week of ${p.weekLabel} · ${prCumulative} PRs cumulative` };
+    return { xLabel: fmtShortDate(p.weekLabel), y: prCumulative, label: `Week of ${p.weekLabel} · ${prCumulative} PRs cumulative` };
   }),
   BUGS_PER_WEEK_SERIES.length, fmtCount
 );

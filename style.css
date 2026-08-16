@@ -977,7 +977,11 @@ html, body {
 }
 .plx-11 .card .value {
   font-size: 23px; font-weight: 700; letter-spacing: -0.02em; color: var(--text);
-  font-variant-numeric: tabular-nums; white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  /* wrap, don't overflow — nowrap was pushing long values ("34,452
+     lines") straight out of the card on narrow layouts instead of
+     letting them drop to a second line. */
+  white-space: normal; overflow-wrap: break-word;
 }
 .plx-11 .card .subvalue {
   font-size: 12.5px; font-weight: 400; color: var(--text-muted); margin: 3px 0 0;
@@ -1036,8 +1040,22 @@ html, body {
   .plx-11 {
     padding: 40px 16px 60px;
   }
+  .plx-11 .cards {
+    /* 2 columns, not 3 — 3 forced every card narrower than its own
+       content ("Codebase size", "34,452 lines"), which is what was
+       overflowing/forcing horizontal scroll. 2 columns × 4 rows fits
+       a phone width with no scroll needed. */
+    grid-template-columns: repeat(2, 1fr);
+    overflow-x: visible;
+  }
+  .plx-11 .card .value {
+    font-size: 19px;
+  }
   .plx-11 .chart-card {
     padding: 18px 16px 14px;
+  }
+  .plx-11 .axis-label {
+    font-size: 9px;
   }
   /* The tooltip is absolutely positioned (top-right of the chart) so
      it can float over live chart data on desktop without pushing
