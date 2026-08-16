@@ -519,7 +519,14 @@ html, body {
   padding: 32px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  /* flex-start, not flex-end — flex-end bottom-anchors the whole
+     block, so a card whose title wraps to two lines (taller block)
+     pushes its tag/icon/title higher than a card with a one-line
+     title, misaligning the tag/heading row across the grid. Top-
+     anchoring keeps that row at the same position on every card; the
+     CTA's own margin-top: auto (below) is what still pins it to the
+     card's bottom. */
+  justify-content: flex-start;
   will-change: transform;
   transform: translateX(0px) translateY(0px) translateZ(0px);
   transition: transform 0.1s ease;
@@ -591,6 +598,9 @@ html, body {
 }
 
 .plx-08__card-cta {
+  /* Pins the CTA to the card's bottom now that the content block
+     itself is top-anchored (see .plx-08__card-content). */
+  margin-top: auto;
   display: flex;
   align-items: center;
   gap: 8px;
