@@ -630,16 +630,6 @@ html, body {
   box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.12);
 }
 
-/* Footer note */
-.plx-08__footer {
-  text-align: center;
-  margin-top: 60px;
-  font-family: 'Geist Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.15em;
-  color: var(--muted);
-}
-
 @media (max-width: 600px) {
   .plx-08 {
     padding: 40px 20px;
