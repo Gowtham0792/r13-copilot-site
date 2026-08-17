@@ -590,10 +590,10 @@ html, body {
 }
 
 .plx-08__card-body {
-  font-size: 13px;
-  font-weight: 300;
-  line-height: 1.65;
-  opacity: 0.55;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.6;
+  opacity: 0.68;
   margin-bottom: 24px;
 }
 
@@ -636,6 +636,16 @@ html, body {
   }
   .plx-08__grid {
     grid-template-columns: 1fr;
+  }
+  .plx-08__card-body {
+    font-size: 16px;
+    opacity: 0.75;
+  }
+  .plx-08__card-tag {
+    font-size: 11px;
+  }
+  .plx-08__card-title {
+    font-size: 24px;
   }
 }
 
